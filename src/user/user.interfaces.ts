@@ -16,3 +16,30 @@ export interface Books {
    */
   booksID: Book.ID[];
 }
+
+export interface Info {
+  /**
+   * The user's identifier.
+   */
+  username: string;
+
+  /**
+   * The user's last name.
+   */
+  lastName: string;
+
+  /**
+   * The user's first name.
+   */
+  firstName: string;
+
+  /**
+   * The user's number of points (=BabelBooks' money).
+   */
+  points: number;
+
+  /**
+   * The user's score (gamification).
+   */
+  score: number;
+}
