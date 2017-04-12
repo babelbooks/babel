@@ -3,9 +3,10 @@ const gulp  = require('gulp');
 const gts   = require('gulp-typescript');
 const gsm   = require('gulp-sourcemaps');
 const del   = require('del');
+const path  = require('path');
 
 // External config
-const tsConfig = require('./tsconfig.json');
+const tsConfig = require(path.resolve(__dirname, './tsconfig.json'));
 
 // Config
 const distFolder  = 'dist';
