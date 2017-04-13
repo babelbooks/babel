@@ -1,7 +1,7 @@
 import * as express from 'express';
 
-import * as Book    from './book.interfaces';
-import * as OMBook  from './book.om';
+import * as Book    from '../../lib/book/book.interfaces';
+import * as OMBook  from './book.bo';
 
 let router: express.Router = express.Router();
 
@@ -24,3 +24,5 @@ router.get('/:bookID', (req: express.Request, res: express.Response) => {
         .json(info);
     });
 });
+
+export default router;

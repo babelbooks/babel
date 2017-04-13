@@ -1,6 +1,6 @@
 import * as Bluebird from 'bluebird';
 
-import * as Book from './book.interfaces';
+import * as Book from '../../lib/book/book.interfaces';
 
 /**
  * Returns all information known about the given book,

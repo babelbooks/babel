@@ -1,7 +1,7 @@
 import * as express from 'express';
 
-import * as OMUser  from './user.om';
-import * as User    from './user.interfaces';
+import * as OMUser  from './user.bo';
+import * as User    from '../../lib/user/user.interfaces';
 
 let router: express.Router = express.Router();
 

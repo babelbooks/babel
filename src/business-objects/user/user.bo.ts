@@ -1,6 +1,6 @@
 import * as Bluebird from 'bluebird';
 
-import * as User from './user.interfaces';
+import * as User from '../../lib/user/user.interfaces';
 
 /**
  * Gather the list of all books fot the given user
