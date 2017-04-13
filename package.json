@@ -4,8 +4,10 @@
   "description": "",
   "main": "dist/server.js",
   "dependencies": {
+    "@types/mysql": "0.0.31",
     "bluebird": "^3.5.0",
     "express": "^4.15.2",
+    "mysql": "^2.13.0",
     "typescript": "^2.2.2"
   },
   "devDependencies": {
