@@ -35,25 +35,25 @@ INSERT INTO `User` (`userId`, `username`, `password`, `signUpDate`, `lastName`, 
 -- Dumping data for table `Book`
 --
 
-INSERT INTO `Book` (`bookId`, `bookMetaDataId`, `userId`) VALUES
-(1, 1, 1),
-(2, 3, 1),
-(3, 4, 1),
-(4, 5, 2),
-(5, 1, 2),
-(6, 6, 3),
-(7, 7, 3),
-(8, 8, 3);
+INSERT INTO `Book` (`bookId`, `bookMetaDataId`, `userId`, `available`) VALUES
+(1, 1, 1, TRUE),
+(2, 3, 1, TRUE),
+(3, 4, 1, TRUE),
+(4, 5, 2, FALSE),
+(5, 1, 2, TRUE),
+(6, 6, 3, FALSE),
+(7, 7, 3, FALSE),
+(8, 8, 3, TRUE);
 
 --
 -- Dumping data for table `Borrow`
 --
 
-INSERT INTO `Borrow` (`borrowId`, `bookId`, `userId`, `endDate`, `dateOfReturn`) VALUES
+INSERT INTO `Borrow` (`borrowId`, `bookId`, `userId`, `beginDate`, `dateOfReturn`) VALUES
 (1, 2, 2, '2017-04-02 10:40:16', '2017-04-04 08:40:12'),
-(2, 4, 1, '2017-04-20 17:34:23', NULL),
+(2, 4, 1, '2017-04-10 17:34:23', NULL),
 (3, 6, 1, '2017-04-06 07:40:52', NULL),
-(4, 7, 1, '2017-04-24 18:34:23', NULL);
+(4, 7, 1, '2017-04-12 18:34:23', NULL);
 
 
 COMMIT;

@@ -19,7 +19,8 @@ USE BabelDB;
 CREATE TABLE `Book` (
   `bookId` bigint(20) NOT NULL,
   `bookMetaDataId` bigint(20) NOT NULL,
-  `userId` bigint(20) NOT NULL COMMENT 'Original owner'
+  `userId` bigint(20) NOT NULL COMMENT 'Original owner',
+  `available` boolean NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -48,7 +49,7 @@ CREATE TABLE `Borrow` (
   `borrowId` bigint(20) NOT NULL,
   `bookId` bigint(20) NOT NULL,
   `userId` bigint(20) NOT NULL,
-  `endDate` timestamp NOT NULL,
+  `beginDate` timestamp NOT NULL,
   `dateOfReturn` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
