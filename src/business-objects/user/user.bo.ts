@@ -28,5 +28,14 @@ export function getUserLibrary(userID: User.ID): Bluebird<User.Books> {
  * @returns {Bluebird<any>}
  */
 export function getUserInfo(userID: User.ID): Bluebird<User.Info> {
-  return Bluebird.reject(new Error("Not implemented yet"));
+  let mockUser: User.Info = {
+    userID: userID,
+    username: 'johndoe27',
+    lastName: 'Doe',
+    firstName: 'John',
+    points: 2,
+    score: 21,
+    signUpDate: new Date(Date.now())
+  };
+  return Bluebird.resolve(mockUser);
 }

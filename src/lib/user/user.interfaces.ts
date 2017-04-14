@@ -19,6 +19,11 @@ export interface Books {
 
 export interface Info {
   /**
+   * The user's ID.
+   */
+  userID: ID;
+
+  /**
    * The user's identifier.
    */
   username: string;
@@ -42,4 +47,9 @@ export interface Info {
    * The user's score (gamification).
    */
   score: number;
+
+  /**
+   * The timestamp at which the user registered.
+   */
+  signUpDate: Date;
 }

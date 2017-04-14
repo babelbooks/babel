@@ -24,7 +24,7 @@ export interface Info {
   /**
    * The list of genres the book is known of.
    */
-  genre: string[];
+  genres: string[];
 
   /**
    * The author's name.

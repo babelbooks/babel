@@ -15,7 +15,7 @@ export function getBookInfo(id: Book.ID) : Bluebird<Book.Info> {
     id: id,
     isbn: 9782226216007,
     title: 'Lisey\'s story',
-    genre: ['horror', 'fiction'],
+    genres: ['horror', 'fiction'],
     author: 'Stephen King'
   };
   return Bluebird.resolve(info);
