@@ -136,16 +136,28 @@ ALTER TABLE `Borrow`
 
 DELIMITER $$
 
-CREATE TRIGGER after_insert_borrow BEFORE INSERT ON Borrow
-FOR EACH ROW
+CREATE FUNCTION newBorrowing
+(myBookId bigint,
+ myUserId bigint
+) RETURNS BOOLEAN
 BEGIN
 
-    UPDATE Book SET Book.available = FALSE
-    WHERE Book.bookId = new.bookId;
-    
-END;
-$$
+	IF( (select available FROM Book WHERE bookId = myBookId)) then 
+    	UPDATE Book SET Book.available = FALSE
+		WHERE Book.bookId = myBookId;
+		
+		UPDATE Borrow SET Borrow.dateOfReturn = Now()
+		WHERE Borrow.bookId = myBookId && Borrow.dateOfReturn IS NULL;
 
-DELIMITER ;
+		INSERT INTO Borrow(borrowId, bookId, userId, beginDate, dateOfReturn) VALUES (NULL, myBookId, myUserId, Now(), NULL);
+
+		RETURN TRUE;
+	ELSE
+		RETURN FALSE;
+    END IF;
+
+END
+
+$$ DELIMITER ;
 
 COMMIT;
