@@ -19,7 +19,8 @@ USE BabelDB;
 CREATE TABLE `Book` (
   `bookId` bigint(20) NOT NULL,
   `bookMetaDataId` bigint(20) NOT NULL,
-  `userId` bigint(20) NOT NULL COMMENT 'Original owner'
+  `userId` bigint(20) NOT NULL COMMENT 'Original owner',
+  `available` boolean NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -48,7 +49,7 @@ CREATE TABLE `Borrow` (
   `borrowId` bigint(20) NOT NULL,
   `bookId` bigint(20) NOT NULL,
   `userId` bigint(20) NOT NULL,
-  `endDate` timestamp NOT NULL,
+  `beginDate` timestamp NOT NULL,
   `dateOfReturn` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -133,5 +134,30 @@ ALTER TABLE `Borrow`
   ADD CONSTRAINT `Borrow_ibfk_1` FOREIGN KEY (`bookId`) REFERENCES `Book` (`bookId`) ON DELETE NO ACTION ON UPDATE CASCADE,
   ADD CONSTRAINT `Borrow_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `User` (`userId`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
+DELIMITER $$
+
+CREATE FUNCTION newBorrowing
+(myBookId bigint,
+ myUserId bigint
+) RETURNS BOOLEAN
+BEGIN
+
+	IF( (select available FROM Book WHERE bookId = myBookId)) then 
+    	UPDATE Book SET Book.available = FALSE
+		WHERE Book.bookId = myBookId;
+		
+		UPDATE Borrow SET Borrow.dateOfReturn = Now()
+		WHERE Borrow.bookId = myBookId && Borrow.dateOfReturn IS NULL;
+
+		INSERT INTO Borrow(borrowId, bookId, userId, beginDate, dateOfReturn) VALUES (NULL, myBookId, myUserId, Now(), NULL);
+
+		RETURN TRUE;
+	ELSE
+		RETURN FALSE;
+    END IF;
+
+END
+
+$$ DELIMITER ;
 
 COMMIT;
