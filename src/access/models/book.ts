@@ -23,6 +23,10 @@ module.exports = function(sequelize: any, DataTypes: any) {
         model: 'user',
         key: 'userId'
       }
+    },
+    available: {
+      type: DataTypes.INTEGER(1),
+      allowNull: false
     }
   }, {
     tableName: 'book'

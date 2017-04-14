@@ -24,7 +24,7 @@ module.exports = function(sequelize: any, DataTypes: any) {
         key: 'userId'
       }
     },
-    endDate: {
+    beginDate: {
       type: DataTypes.TIME,
       allowNull: false,
       defaultValue: 'sequelize.literal(\'CURRENT_TIMESTAMP\')'
