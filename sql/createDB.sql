@@ -134,5 +134,18 @@ ALTER TABLE `Borrow`
   ADD CONSTRAINT `Borrow_ibfk_1` FOREIGN KEY (`bookId`) REFERENCES `Book` (`bookId`) ON DELETE NO ACTION ON UPDATE CASCADE,
   ADD CONSTRAINT `Borrow_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `User` (`userId`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
+DELIMITER $$
+
+CREATE TRIGGER after_insert_borrow BEFORE INSERT ON Borrow
+FOR EACH ROW
+BEGIN
+
+    UPDATE Book SET Book.available = FALSE
+    WHERE Book.bookId = new.bookId;
+    
+END;
+$$
+
+DELIMITER ;
 
 COMMIT;
