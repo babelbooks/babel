@@ -2,26 +2,26 @@
 
 module.exports = function(sequelize: any, DataTypes: any) {
   return sequelize.define('book', {
-    BookId: {
+    bookId: {
       type: DataTypes.BIGINT,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true
     },
-    BookMetaDataId: {
+    bookMetaDataId: {
       type: DataTypes.BIGINT,
       allowNull: false,
       references: {
         model: 'bookmetadata',
-        key: 'MetaDataId'
+        key: 'metaDataId'
       }
     },
-    UserId: {
+    userId: {
       type: DataTypes.BIGINT,
       allowNull: false,
       references: {
         model: 'user',
-        key: 'UserId'
+        key: 'userId'
       }
     }
   }, {

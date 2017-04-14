@@ -2,33 +2,33 @@
 
 module.exports = function(sequelize: any, DataTypes: any) {
   return sequelize.define('bookmetadata', {
-    MetaDataId: {
+    metaDataId: {
       type: DataTypes.BIGINT,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true
     },
-    ISBN: {
+    isbn: {
       type: DataTypes.STRING(20),
       allowNull: true
     },
-    Title: {
+    title: {
       type: DataTypes.STRING(200),
       allowNull: false
     },
-    Author: {
+    author: {
       type: DataTypes.STRING(200),
       allowNull: false
     },
-    Edition: {
+    edition: {
       type: DataTypes.STRING(200),
       allowNull: true
     },
-    MajorForm: {
+    majorForm: {
       type: DataTypes.STRING(200),
       allowNull: true
     },
-    Cover: {
+    cover: {
       type: DataTypes.STRING(2000),
       allowNull: true
     }

@@ -2,38 +2,38 @@
 
 module.exports = function(sequelize: any, DataTypes: any) {
   return sequelize.define('user', {
-    UserId: {
+    userId: {
       type: DataTypes.BIGINT,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true
     },
-    Username: {
+    username: {
       type: DataTypes.STRING(45),
       allowNull: false
     },
-    Password: {
+    password: {
       type: "BINARY(64)",
       allowNull: false
     },
-    SignUpDate: {
+    signUpDate: {
       type: DataTypes.TIME,
       allowNull: false,
       defaultValue: 'sequelize.literal(\'CURRENT_TIMESTAMP\')'
     },
-    LastName: {
+    lastName: {
       type: DataTypes.STRING(100),
       allowNull: false
     },
-    FirstName: {
+    firstName: {
       type: DataTypes.STRING(100),
       allowNull: false
     },
-    Points: {
+    points: {
       type: DataTypes.INTEGER(11),
       allowNull: false
     },
-    Score: {
+    score: {
       type: DataTypes.BIGINT,
       allowNull: true
     }

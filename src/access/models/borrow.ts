@@ -2,29 +2,34 @@
 
 module.exports = function(sequelize: any, DataTypes: any) {
   return sequelize.define('borrow', {
-    BorrowId: {
+    borrowId: {
       type: DataTypes.BIGINT,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true
     },
-    BookId: {
+    bookId: {
       type: DataTypes.BIGINT,
       allowNull: false,
       references: {
         model: 'book',
-        key: 'BookId'
+        key: 'bookId'
       }
     },
-    UserId: {
+    userId: {
       type: DataTypes.BIGINT,
       allowNull: false,
       references: {
         model: 'user',
-        key: 'UserId'
+        key: 'userId'
       }
     },
-    EndDate: {
+    endDate: {
+      type: DataTypes.TIME,
+      allowNull: false,
+      defaultValue: 'sequelize.literal(\'CURRENT_TIMESTAMP\')'
+    },
+    dateOfReturn: {
       type: DataTypes.TIME,
       allowNull: true
     }
