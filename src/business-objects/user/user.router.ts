@@ -11,7 +11,7 @@ router.get('/test', (req: express.Request, res: express.Response) => {
     .json({
       endpoint: req.originalUrl,
       status: 200,
-      comment: "it\'s working!"
+      comment: 'it\'s working!'
     });
 });
 
