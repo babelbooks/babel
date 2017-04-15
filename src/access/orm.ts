@@ -1,8 +1,13 @@
 import * as Sequelize from 'sequelize';
 
+/**
+ * The options sequelize will use.
+ */
 let options: Sequelize.Options;
 
+// Set different options depending of the environment (prod or dev)
 if(process.env.NODE_ENV == 'production') {
+  // Prod options
   options = {
     host: 'localhost',
     port: process.env.BB_DB_PORT,
@@ -11,9 +16,13 @@ if(process.env.NODE_ENV == 'production') {
       max: process.env.BB_DB_MAXPOOL,
       min: process.env.BB_DB_MINPOOL,
       idle: process.env.BB_DB_IDLE
+    },
+    logging: () => {
+      // TODO: use a logger
     }
   }
 } else {
+  // Dev options
   options = {
     host: 'localhost',
     port: 3306,
@@ -26,12 +35,20 @@ if(process.env.NODE_ENV == 'production') {
   }
 }
 
+// Common options
 options.define = {
   timestamps: false
 };
 
+/**
+ * The object representing our database.
+ */
 export let database = new Sequelize('BabelDB', 'root', 'admin', options);
 
+/**
+ * The domain's model that will be used to manipulate
+ * the database.
+ */
 export namespace Model {
   // First let's import all schemas created thanks to sequelize-auto
   // Command used:
