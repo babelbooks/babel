@@ -50,7 +50,7 @@ export namespace Model {
 
   // Book has user (original owner) and bookmetadata association (1:n)
   Book.belongsTo(User, {foreignKey: 'userId'});
-  Book.belongsTo(Metadata, {foreignKey: 'bookMetaDataId'});
+  Book.belongsTo(Metadata, {foreignKey: 'bookMetaDataId', as: 'metadata'});
   User.hasMany(Book, {foreignKey: 'bookId'});
   Metadata.hasMany(Book, {foreignKey: 'bookId'});
 }
