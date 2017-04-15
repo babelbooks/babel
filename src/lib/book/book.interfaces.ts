@@ -3,6 +3,23 @@
  */
 export type ID = number;
 
+export interface Raw {
+  /**
+   * The book's unique ID.
+   */
+  id: ID;
+
+  /**
+   * The book's metadata ID.
+   */
+  bookMetaDataId: ID;
+
+  /**
+   * The book's owner ID.
+   */
+  userID: ID;
+}
+
 export interface Info {
   /**
    * The book's unique ID.

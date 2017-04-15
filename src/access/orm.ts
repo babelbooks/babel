@@ -1,6 +1,6 @@
 import * as Sequelize from 'sequelize';
 
-let options: Sequelize.Options
+let options: Sequelize.Options;
 
 if(process.env.NODE_ENV == 'production') {
   options = {

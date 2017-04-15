@@ -68,6 +68,38 @@ export function getUserAvailableBooks(userID: User.ID): Bluebird<User.Books> {
     });
 }
 
+export function getUserCurrentBooks(userID: User.ID): Bluebird<User.Books> {
+  return Bluebird.resolve(Model.Book
+    .findAll({
+      where: {
+        userID: userID,
+        dateOfReturn: true
+      }
+    }))
+    .then((books: any[]) => {
+      let lib: User.Books = {
+        userID: userID,
+        booksID: []
+      };
+      for(let b of books) {
+        lib.booksID.push(b.dataValues.bookId);
+      }
+      return lib;
+    });
+}
+
+export function getAllAvailableBooks() : Bluebird<Book.Raw> {
+  return Bluebird.resolve(Model.Book
+    .findAll({
+      where: {
+        available: true
+      }
+    }))
+    .then((book: any) => {
+      return Object.assign(book.dataValues);
+    });
+}
+
 export function getBookById(bookID: Book.ID): Bluebird<Book.Info> {
   return Bluebird.resolve(Model.Book
     .findById(bookID))
