@@ -51,13 +51,13 @@ export function getUserBooks(userId: ID): Bluebird<User.Books> {
 
 /**
  * Returns all books of the given user that are
- * currently in possession of the given user.
+ * currently borrowed by the given user.
  * If the given user doesn't exists or owns no book,
  * returns an empty array in booksID.
  * @param userId The user's ID.
  * @returns {Bluebird<User.Books>}
  */
-export function getUserCurrentBooks(userId: ID): Bluebird<User.Books> {
+export function getUserBorrowedBooks(userId: ID): Bluebird<User.Books> {
   return Bluebird.resolve(Model.Borrow
     .findAll({
       where: {
