@@ -19,7 +19,7 @@ export function getUserById(userId: ID): Bluebird<User.Info> {
       if(!user) {
         return Bluebird.reject(new Error('No User found with ID: ' + userId));
       }
-      return sanitizeUser(Object.assign(user.get({plain: true})));
+      return sanitizeUser(user.get({plain: true}));
     });
 }
 
