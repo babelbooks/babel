@@ -2,7 +2,7 @@ import * as Bluebird  from 'bluebird';
 import { Model }      from './orm';
 import { Book }       from '../lib';
 import { ID }         from '../lib';
-import { sanitizeBookInfoForInsert }  from './sanitizer';
+import { sanitizeMetadataForInsert }  from './sanitizer';
 import { getBookById }                from './book.access';
 
 /**
@@ -31,12 +31,12 @@ export function getMetadataById(dataId: ID): Bluebird<any> {
  * @param data The metadata to insert.
  * @returns {Bluebird<any>}
  */
-export function addMetadata(data: Book.Info): Bluebird<any> {
+export function addMetadata(data: Book.Metadata): Bluebird<any> {
   // TODO: check for already existing metadata ?
   // TODO: type that
   return Bluebird
     .resolve(Model.Metadata
-      .create(sanitizeBookInfoForInsert(data)
+      .create(sanitizeMetadataForInsert(data)
     ))
     .then((res: any) => {
       return res.get({plain: true});
@@ -48,9 +48,9 @@ export function addMetadata(data: Book.Info): Bluebird<any> {
  * If no books exists for the given ID, or if no metadata
  * exists (this would mean BIG problem), returns a promise rejection.
  * @param bookId The ID of the book for which find metadata.
- * @returns {Bluebird<Book.Info>}
+ * @returns {Bluebird<Book.Metadata>}
  */
-export function getBookMetadata(bookId: Book.ID): Bluebird<Book.Info> {
+export function getBookMetadata(bookId: ID): Bluebird<Book.Metadata> {
   return getBookById(bookId)
     .then((book: any) => {
       return Model.Book.find({
@@ -73,8 +73,8 @@ export function getBookMetadata(bookId: Book.ID): Bluebird<Book.Info> {
       if(!res) {
         return Bluebird.reject(new Error('Unable to gather Metadata for the book with the ID: ' + bookId));
       }
-      let info: Book.Info = res.metadata;
-      info.id = bookId;
+      let info: Book.Metadata = res.metadata;
+      info.bookId = bookId;
       return info;
     });
 }

@@ -10,9 +10,9 @@ import { sanitizeUser } from './sanitizer';
  * If no user exists with the given ID,
  * returns a promise rejection.
  * @param userId The user's ID.
- * @returns {Bluebird<User.Info>}
+ * @returns {Bluebird<User.Metadata>}
  */
-export function getUserById(userId: User.ID): Bluebird<User.Info> {
+export function getUserById(userId: ID): Bluebird<User.Info> {
   return Bluebird.resolve(Model.User
     .findById(userId))
     .then((user: any) => {
@@ -30,7 +30,7 @@ export function getUserById(userId: User.ID): Bluebird<User.Info> {
  * @param userId The user's ID.
  * @returns {Bluebird<User.Books>}
  */
-export function getUserBooks(userId: User.ID): Bluebird<User.Books> {
+export function getUserBooks(userId: ID): Bluebird<User.Books> {
   return Bluebird.resolve(Model.Book
     .findAll({
       where: {
@@ -39,11 +39,11 @@ export function getUserBooks(userId: User.ID): Bluebird<User.Books> {
     }))
     .then((books: any[]) => {
       let lib: User.Books = {
-        userID: userId,
-        booksID: []
+        userId: userId,
+        booksId: []
       };
       for(let b of books) {
-        lib.booksID.push(b.get({plain: true}).bookId);
+        lib.booksId.push(b.get({plain: true}).bookId);
       }
       return lib;
     });
@@ -57,7 +57,7 @@ export function getUserBooks(userId: User.ID): Bluebird<User.Books> {
  * @param userId The user's ID.
  * @returns {Bluebird<User.Books>}
  */
-export function getUserCurrentBooks(userId: User.ID): Bluebird<User.Books> {
+export function getUserCurrentBooks(userId: ID): Bluebird<User.Books> {
   return Bluebird.resolve(Model.Borrow
     .findAll({
       where: {
@@ -67,11 +67,11 @@ export function getUserCurrentBooks(userId: User.ID): Bluebird<User.Books> {
     }))
     .then((books: any[]) => {
       let lib: User.Books = {
-        userID: userId,
-        booksID: []
+        userId: userId,
+        booksId: []
       };
       for(let b of books) {
-        lib.booksID.push(b.get({plain: true}).bookId);
+        lib.booksId.push(b.get({plain: true}).bookId);
       }
       return lib;
     });
@@ -85,7 +85,7 @@ export function getUserCurrentBooks(userId: User.ID): Bluebird<User.Books> {
  * @param userId The user's ID.
  * @returns {Bluebird<User.Books>}
  */
-export function getUserReadingBooks(userId: User.ID): Bluebird<User.Books> {
+export function getUserReadingBooks(userId: ID): Bluebird<User.Books> {
   return Bluebird.resolve(Model.Borrow
     .findAll({
       where: {
@@ -101,11 +101,11 @@ export function getUserReadingBooks(userId: User.ID): Bluebird<User.Books> {
     }))
     .then((books: any[]) => {
       let lib: User.Books = {
-        userID: userId,
-        booksID: []
+        userId: userId,
+        booksId: []
       };
       for(let b of books) {
-        lib.booksID.push(b.dataValues.bookId);
+        lib.booksId.push(b.dataValues.bookId);
       }
       return lib;
     });
@@ -122,7 +122,7 @@ export function getUserReadingBooks(userId: User.ID): Bluebird<User.Books> {
  * @param bookId The ID of the book to borrow.
  * @returns {Bluebird<boolean>}
  */
-export function borrowBook(userId: User.ID, bookId: ID): Bluebird<void> {
+export function borrowBook(userId: ID, bookId: ID): Bluebird<void> {
   return Bluebird
     .resolve(database.query(
       'select newBorrowing(:userId, :bookId) as res',

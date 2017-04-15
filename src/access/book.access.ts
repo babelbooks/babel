@@ -3,7 +3,7 @@ import { Model }      from './orm';
 import { User }       from '../lib';
 import { Book }       from '../lib';
 import { ID }         from '../lib';
-import { sanitizeBookInfoForInsert } from './sanitizer';
+import { sanitizeMetadataForInsert }  from './sanitizer';
 
 /**
  * Returns the raw book identified by the given ID.
@@ -12,7 +12,7 @@ import { sanitizeBookInfoForInsert } from './sanitizer';
  * @param bookId The book's ID.
  * @returns {Bluebird<Book.Raw>}
  */
-export function getBookById(bookId: Book.ID): Bluebird<Book.Raw> {
+export function getBookById(bookId: ID): Bluebird<Book.Raw> {
   return Bluebird.resolve(Model.Book
     .findById(bookId))
     .then((book: any) => {
@@ -52,12 +52,12 @@ export function getAllAvailableBooks() : Bluebird<Book.Raw[]> {
  * @param bookData The associated metadata or metadata ID.
  * @returns {Bluebird<any>}
  */
-export function addBook(userID: User.ID, bookData: Book.Info | ID): Bluebird<any> {
+export function addBook(userID: ID, bookData: Book.Metadata | ID): Bluebird<any> {
   return Bluebird
     .try(() => {
       if(typeof bookData == 'object') {
         return Model
-          .Metadata.create(sanitizeBookInfoForInsert(bookData))
+          .Metadata.create(sanitizeMetadataForInsert(bookData))
           .then((res: any) => {
             if(res) {
               return Model.Book.create({userID: userID, bookId: res.get({plain: true}).metaDataId});
@@ -75,7 +75,7 @@ export function addBook(userID: User.ID, bookData: Book.Info | ID): Bluebird<any
  * @param bookId The book's ID.
  * @returns {Bluebird<Promise>}
  */
-export function setBookRead(bookId: Book.ID): Bluebird<any> {
+export function setBookRead(bookId: ID): Bluebird<any> {
   return Bluebird.resolve(Model.Book
     .update({
         available: true

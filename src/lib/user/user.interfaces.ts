@@ -1,27 +1,22 @@
-import * as Book  from '../book/book.interfaces';
-
-/**
- * The type of the unique identifier that every User must have.
- */
-export type ID = number;
+import { ID } from '../shared/id.type';
 
 export interface Books {
   /**
    * The user's ID/
    */
-  userID: ID;
+  userId: ID;
 
   /**
    * The list of all books' IDs for a given user.
    */
-  booksID: Book.ID[];
+  booksId: ID[];
 }
 
 export interface Info {
   /**
    * The user's ID.
    */
-  userID: ID;
+  userId: ID;
 
   /**
    * The user's identifier.

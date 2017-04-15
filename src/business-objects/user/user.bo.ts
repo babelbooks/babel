@@ -1,6 +1,7 @@
 import * as Bluebird from 'bluebird';
 
-import * as User from '../../lib/user/user.interfaces';
+import { User } from '../../lib';
+import { ID }   from '../../lib';
 
 /**
  * Gather the list of all books fot the given user
@@ -10,10 +11,10 @@ import * as User from '../../lib/user/user.interfaces';
  * @param userID The user's ID.
  * @returns {Bluebird<User.Books>}
  */
-export function getUserLibrary(userID: User.ID): Bluebird<User.Books> {
+export function getUserLibrary(userID: ID): Bluebird<User.Books> {
   let mockBooks: User.Books = {
-    userID: userID,
-    booksID: [
+    userId: userID,
+    booksId: [
       1, 3
     ]
   };
@@ -27,9 +28,9 @@ export function getUserLibrary(userID: User.ID): Bluebird<User.Books> {
  * @param userID
  * @returns {Bluebird<any>}
  */
-export function getUserInfo(userID: User.ID): Bluebird<User.Info> {
+export function getUserInfo(userID: ID): Bluebird<User.Info> {
   let mockUser: User.Info = {
-    userID: userID,
+    userId: userID,
     username: 'johndoe27',
     lastName: 'Doe',
     firstName: 'John',

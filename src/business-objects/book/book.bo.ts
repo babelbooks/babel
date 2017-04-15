@@ -1,6 +1,7 @@
 import * as Bluebird from 'bluebird';
 
-import * as Book from '../../lib/book/book.interfaces';
+import { Book } from '../../lib';
+import { ID }   from '../../lib';
 
 /**
  * Returns all information known about the given book,
@@ -8,11 +9,12 @@ import * as Book from '../../lib/book/book.interfaces';
  * If no bok is known for this ID,
  * returns an undefined object.
  * @param id
- * @returns {Bluebird<Book.Info>}
+ * @returns {Bluebird<Book.Metadata>}
  */
-export function getBookInfo(id: Book.ID) : Bluebird<Book.Info> {
-  let info: Book.Info = {
-    id: id,
+export function getBookInfo(id: ID) : Bluebird<Book.Metadata> {
+  let info: Book.Metadata = {
+    bookId: id,
+    metaDataId: 42,
     isbn: 9782226216007,
     title: 'Lisey\'s story',
     genres: ['horror', 'fiction'],

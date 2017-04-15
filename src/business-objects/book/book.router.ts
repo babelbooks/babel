@@ -18,7 +18,7 @@ router.get('/test', (req: express.Request, res: express.Response) => {
 router.get('/:bookID', (req: express.Request, res: express.Response) => {
   return OMBook
     .getBookInfo(req.params['bookID'])
-    .then((info: Book.Info) => {
+    .then((info: Book.Metadata) => {
       return res
         .status(200)
         .json(info);

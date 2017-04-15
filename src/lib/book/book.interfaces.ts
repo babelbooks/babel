@@ -1,13 +1,10 @@
-/**
- * The type of the unique identifier that every Book must have.
- */
-export type ID = number;
+import { ID } from '../shared/id.type';
 
 export interface Raw {
   /**
    * The book's unique ID.
    */
-  id: ID;
+  bookId: ID;
 
   /**
    * The book's metadata ID.
@@ -17,20 +14,30 @@ export interface Raw {
   /**
    * The book's owner ID.
    */
-  userID: ID;
+  userId: ID;
+
+  /**
+   * Whether or not the book is available to borrow.
+   */
+  available: boolean;
 }
 
-export interface Info {
+export interface Metadata {
   /**
-   * The book's unique ID.
+   * The metadata's unique ID.
    */
-  id: ID;
+  metaDataId: ID;
 
   /**
-   * The books ISBN, if it exists.
-   * If the book hasn't any ISBN, then it's -1.
+   * The book's unique ID to which
+   * these metadata are for.
    */
-  isbn: number;
+  bookId: ID;
+
+  /**
+   * The books ISBN, if it exists..
+   */
+  isbn?: number;
 
   /**
    * The book's title.
@@ -47,4 +54,20 @@ export interface Info {
    * The author's name.
    */
   author: string;
+
+  /**
+   * The book's edition (one of them).
+   */
+  edition?: string;
+
+  /**
+   * Whether if the book is a novel, a short story
+   * or anything else.
+   */
+  majorForm?: string;
+
+  /**
+   * An url to the book's cover.
+   */
+  cover?: string;
 }
