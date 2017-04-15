@@ -53,7 +53,7 @@ export function getUserAvailableBooks(userID: User.ID): Bluebird<User.Books> {
     .findAll({
       where: {
         userID: userID,
-        dateOfReturn: true
+        dateOfReturn: null
       }
     }))
     .then((books: any[]) => {
@@ -68,25 +68,25 @@ export function getUserAvailableBooks(userID: User.ID): Bluebird<User.Books> {
     });
 }
 
-export function getUserCurrentBooks(userID: User.ID): Bluebird<User.Books> {
-  return Bluebird.resolve(Model.Book
-    .findAll({
-      where: {
-        userID: userID,
-        dateOfReturn: true
-      }
-    }))
-    .then((books: any[]) => {
-      let lib: User.Books = {
-        userID: userID,
-        booksID: []
-      };
-      for(let b of books) {
-        lib.booksID.push(b.dataValues.bookId);
-      }
-      return lib;
-    });
-}
+// export function getUserCurrentBooks(userID: User.ID): Bluebird<User.Books> {
+//   // return Bluebird.resolve(Model.Book
+//   //   .findAll({
+//   //     where: {
+//   //       userID: userID,
+//   //       dateOfReturn: null
+//   //     }
+//   //   }))
+//   //   .then((books: any[]) => {
+//   //     let lib: User.Books = {
+//   //       userID: userID,
+//   //       booksID: []
+//   //     };
+//   //     for(let b of books) {
+//   //       lib.booksID.push(b.dataValues.bookId);
+//   //     }
+//   //     return lib;
+//   //   });
+// }
 
 export function getAllAvailableBooks() : Bluebird<Book.Raw> {
   return Bluebird.resolve(Model.Book
@@ -100,7 +100,7 @@ export function getAllAvailableBooks() : Bluebird<Book.Raw> {
     });
 }
 
-export function getBookById(bookID: Book.ID): Bluebird<Book.Info> {
+export function getBookById(bookID: Book.ID): Bluebird<Book.Raw> {
   return Bluebird.resolve(Model.Book
     .findById(bookID))
     .then((book: any) => {
@@ -131,16 +131,47 @@ export function addMetadata(book: Book.Info): Bluebird<any> {
   );
 }
 
-export function getBookMetadata(bookID: Book.ID): Bluebird<Book.Info[]> {
+export function getBookMetadata(bookID: Book.ID): Bluebird<Book.Info> {
   return getBookById(bookID)
     .then((book: any) => {
-      return Model.Metadata.find({
+      return Model.Book.find({
         where: {
-          bookID: book.bookId
-        }
+          bookId: book.bookId
+        },
+        include: [{
+          model: Model.Metadata,
+          as: 'metadata'
+        }]
       })
     })
-    .map((data: any) => {
-      return data.dataValues;
+    .then((res: any) => {
+      return res.get({plain: true});
+    })
+    .then((res: any) => {
+      let info: Book.Info = res.metadata;
+      info.id = bookID;
+      return info;
     });
 }
+
+export function test(): Bluebird<any> {
+  return getBookMetadata(1);
+  // return Bluebird
+  //   .resolve(Model.Borrow.findAll({
+  //     include: [Model.Book]
+  //   }))
+  //   .map((res: any) => {
+  //     return res.get({plain: true});
+  //   });
+}
+
+test()
+  .then((res: any) => {
+    console.log(res);
+    process.exit(0);
+  })
+  .catch((err: Error) => {
+    console.error('ERR');
+    console.error(err);
+    process.exit(1);
+  });
