@@ -68,3 +68,22 @@ export function addBook(userID: User.ID, bookData: Book.Info | ID): Bluebird<any
       return Model.Book.create({userID: userID, bookId: bookData});
     });
 }
+
+/**
+ * Sets the given book as available.
+ * If the book was already available, does nothing.
+ * @param bookId The book's ID.
+ * @returns {Bluebird<Promise>}
+ */
+export function setBookRead(bookId: Book.ID): Bluebird<any> {
+  return Bluebird.resolve(Model.Book
+    .update({
+        available: true
+      },
+      {
+        where: {
+          bookId: bookId
+        }
+      }
+    ));
+}
