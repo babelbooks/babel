@@ -30,7 +30,7 @@ options.define = {
   timestamps: false
 };
 
-let database = new Sequelize('BabelDB', 'root', 'admin', options);
+export let database = new Sequelize('BabelDB', 'root', 'admin', options);
 
 export namespace Model {
   // First let's import all schemas created thanks to sequelize-auto
