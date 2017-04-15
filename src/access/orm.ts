@@ -33,9 +33,25 @@ options.define = {
 let database = new Sequelize('BabelDB', 'root', 'admin', options);
 
 export namespace Model {
+  // First let's import all schemas created thanks to sequelize-auto
+  // Command used:
+  // sequelize-auto -o "./models" -d babelDB -h localhost -u root -p 3306 -x <pass> -e mysql
   export let User = database.import('./models/user');
   export let Book = database.import('./models/book');
   export let Borrow = database.import('./models/borrow');
   export let Metadata = database.import('./models/bookmetadata');
+
+  // Then complete its associations
+  // Borrow has book and user associations (1:n)
+  Borrow.belongsTo(User, {foreignKey: 'userId'});
+  Borrow.belongsTo(Book, {foreignKey: 'bookId'});
+  User.hasMany(Borrow, {foreignKey: 'userId'});
+  Book.hasMany(Borrow, {foreignKey: 'bookId'});
+
+  // Book has user (original owner) and bookmetadata association (1:n)
+  Book.belongsTo(User, {foreignKey: 'userId'});
+  Book.belongsTo(Metadata, {foreignKey: 'bookMetaDataId'});
+  User.hasMany(Book, {foreignKey: 'bookId'});
+  Metadata.hasMany(Book, {foreignKey: 'bookId'});
 }
 
