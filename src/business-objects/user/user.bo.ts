@@ -1,42 +1,50 @@
-import * as Bluebird from 'bluebird';
-
-import { User } from '../../lib';
-import { ID }   from '../../lib';
+import * as Bluebird  from 'bluebird';
+import * as services  from '../../access/user.access';
+import { User, Book } from '../../lib';
+import { ID }         from '../../lib';
 
 /**
  * Gather the list of all books fot the given user
  * (identified by the given ID).
  * If the user hasn't any books yet, returns an object
  * with an empty array.
- * @param userID The user's ID.
+ * @param userId The user's ID.
  * @returns {Bluebird<User.Books>}
  */
-export function getUserLibrary(userID: ID): Bluebird<User.Books> {
-  let mockBooks: User.Books = {
-    userId: userID,
-    booksId: [
-      1, 3
-    ]
-  };
-  return Bluebird.resolve(mockBooks);
+export function getUserLibrary(userId: ID): Bluebird<User.Books> {
+  return services
+    .getUserBooks(userId)
+    .then((books: Book.Raw[]) => {
+      let lib: User.Books = {
+        userId: userId,
+        booksId: []
+      };
+      for(let b of books) {
+        lib.booksId.push(b.bookId);
+      }
+      return lib;
+    });
 }
 
 /**
  * Returns all user's information that can be safely
  * broadcast. I.e. some data such has the hashed password
  * won't be sent here.
- * @param userID
+ * @param userId
  * @returns {Bluebird<any>}
  */
-export function getUserInfo(userID: ID): Bluebird<User.Info> {
-  let mockUser: User.Info = {
-    userId: userID,
-    username: 'johndoe27',
-    lastName: 'Doe',
-    firstName: 'John',
-    points: 2,
-    score: 21,
-    signUpDate: new Date(Date.now())
-  };
-  return Bluebird.resolve(mockUser);
+export function getUserInfo(userId: ID): Bluebird<User.Info> {
+  return services.getUserById(userId);
+}
+
+/**
+ * Adds an user to Babelbooks.
+ * If there was a problem with the request,
+ * i.e. an user already exist with the given username,
+ * returns a promise rejection.
+ * @param user The user's info to add.
+ * @returns {Bluebird<any>}
+ */
+export function addUser(user: User.Info): Bluebird<any> {
+  return services.addUser(user);
 }
