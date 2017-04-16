@@ -1,8 +1,9 @@
-import * as Bluebird  from 'bluebird';
-import { Model }      from './orm';
-import { User }       from '../lib';
-import { Book }       from '../lib';
-import { ID }         from '../lib';
+import * as Bluebird    from 'bluebird';
+import { Transaction }  from 'sequelize';
+import { Model }        from './orm';
+import { database }     from './orm';
+import { Book }         from '../lib';
+import { ID }           from '../lib';
 import { sanitizeMetadataForInsert }  from './sanitizer';
 
 /**
@@ -29,7 +30,7 @@ export function getBookById(bookId: ID): Bluebird<Book.Raw> {
  * If no book is available, returns an empty array.
  * @returns {Bluebird<Book.Raw[]>}
  */
-export function getAllAvailableBooks() : Bluebird<Book.Raw[]> {
+export function getAllAvailableBooks(): Bluebird<Book.Raw[]> {
   return Bluebird.resolve(Model.Book
     .findAll({
       where: {
@@ -56,16 +57,25 @@ export function addBook(userID: ID, bookData: Book.Metadata | ID): Bluebird<any>
   return Bluebird
     .try(() => {
       if(typeof bookData == 'object') {
-        return Model
-          .Metadata.create(sanitizeMetadataForInsert(bookData))
-          .then((res: any) => {
-            if(res) {
-              return Model.Book.create({userID: userID, bookId: res.get({plain: true}).metaDataId});
-            }
-            return Bluebird.reject(new Error('Unable to create the provided metadata.'));
-          });
+        return database.transaction((t: Transaction) => {
+          return Model.Metadata
+            .create(sanitizeMetadataForInsert(bookData), {
+              transaction: t
+            })
+            .then((res: any) => {
+              if(res) {
+                return Model.Book.create({userID: userID, bookId: res.get({plain: true}).metaDataId});
+              }
+              return Bluebird.reject(new Error('Unable to create the provided metadata.'));
+            });
+        });
       }
-      return Model.Book.create({userID: userID, bookId: bookData});
+      return database.transaction((t: Transaction) => {
+        return Model.Book
+          .create({userID: userID, bookId: bookData}, {
+            transaction: t
+          });
+      });
     });
 }
 
@@ -76,14 +86,16 @@ export function addBook(userID: ID, bookData: Book.Metadata | ID): Bluebird<any>
  * @returns {Bluebird<Promise>}
  */
 export function setBookRead(bookId: ID): Bluebird<any> {
-  return Bluebird.resolve(Model.Book
-    .update({
-        available: true
-      },
-      {
-        where: {
-          bookId: bookId
-        }
-      }
-    ));
+  return Bluebird.resolve(database.transaction((t: Transaction) => {
+    return Model.Book
+      .update({
+          available: true
+        },
+        {
+          where: {
+            bookId: bookId
+          },
+          transaction: t
+        });
+  }));
 }
