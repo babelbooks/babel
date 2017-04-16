@@ -1,7 +1,16 @@
 import { Book } from '../lib';
+import { User } from '../lib';
 
 export function sanitizeUser(user: any): any {
   delete user.password;
+  return user;
+}
+
+export function sanitizeUserForInsert(user: User.Info): any {
+  delete user.userId;
+  delete user.signUpDate;
+  user.points = 2;        // TODO: define default value somewhere
+  user.score = 0;         // TODO: define default value somewhere
   return user;
 }
 

@@ -1,9 +1,10 @@
 import * as Bluebird    from 'bluebird';
 import { database }     from './orm';
 import { Model }        from './orm';
-import { User }         from '../lib';
+import { User, Book }   from '../lib';
 import { ID }           from '../lib';
-import { sanitizeUser } from './sanitizer';
+import { sanitizeUser }           from './sanitizer';
+import { sanitizeUserForInsert }  from './sanitizer';
 
 /**
  * Returns sanitized user's information directly from database.
@@ -24,28 +25,45 @@ export function getUserById(userId: ID): Bluebird<User.Info> {
 }
 
 /**
+ * Adds an user to the database.
+ * Before doing so, removes and reset some fields to default values
+ * (id, score, point, sign-up date), and check for unique username.
+ * If there was a problem with the insert, return a promise rejection.
+ * @param user The user's info to insert.
+ * @returns {Bluebird<any>}
+ */
+export function addUser(user: User.Info): Bluebird<any> {
+  return Bluebird
+    .resolve(Model.User.findAll({
+      where : {
+        username: user.username
+      }
+    }))
+    .then((users: any[]) => {
+      if(users.length == 0) {
+        return Model.User.create(sanitizeUserForInsert(user));
+      }
+      // Oops, this username already exists !
+      return Bluebird.reject(new Error('An User with the given username already exists.'));
+    });
+}
+
+/**
  * Returns a list of all books' IDs owned by the given user.
  * If the given user doesn't exists or owns no book,
  * returns an empty array in booksID.
  * @param userId The user's ID.
  * @returns {Bluebird<User.Books>}
  */
-export function getUserBooks(userId: ID): Bluebird<User.Books> {
+export function getUserBooks(userId: ID): Bluebird<Book.Raw[]> {
   return Bluebird.resolve(Model.Book
     .findAll({
       where: {
         userId: userId
       }
     }))
-    .then((books: any[]) => {
-      let lib: User.Books = {
-        userId: userId,
-        booksId: []
-      };
-      for(let b of books) {
-        lib.booksId.push(b.get({plain: true}).bookId);
-      }
-      return lib;
+    .map((book: any) => {
+      return book.get({plain: true});
     });
 }
 
