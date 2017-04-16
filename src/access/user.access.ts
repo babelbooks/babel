@@ -102,7 +102,7 @@ export function getUserBorrowedBooks(userId: ID): Bluebird<any[]> {
  * @param userId The user's ID.
  * @returns {Bluebird<User.Books>}
  */
-export function getUserReadingBooks(userId: ID): Bluebird<User.Books> {
+export function getUserReadingBooks(userId: ID): Bluebird<any[]> {
   return Bluebird.resolve(Model.Borrow
     .findAll({
       where: {
@@ -116,15 +116,8 @@ export function getUserReadingBooks(userId: ID): Bluebird<User.Books> {
         }
       }]
     }))
-    .then((books: any[]) => {
-      let lib: User.Books = {
-        userId: userId,
-        booksId: []
-      };
-      for(let b of books) {
-        lib.booksId.push(b.dataValues.bookId);
-      }
-      return lib;
+    .map((res: any) => {
+      return res.get({plain: true});
     });
 }
 
