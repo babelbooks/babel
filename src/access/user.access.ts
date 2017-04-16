@@ -53,7 +53,7 @@ export function addUser(user: User.Info): Bluebird<any> {
  * If the given user doesn't exists or owns no book,
  * returns an empty array in booksID.
  * @param userId The user's ID.
- * @returns {Bluebird<User.Books>}
+ * @returns {Bluebird<Book.Raw[]>}
  */
 export function getUserBooks(userId: ID): Bluebird<Book.Raw[]> {
   return Bluebird.resolve(Model.Book
@@ -73,9 +73,9 @@ export function getUserBooks(userId: ID): Bluebird<Book.Raw[]> {
  * If the given user doesn't exists or owns no book,
  * returns an empty array in booksID.
  * @param userId The user's ID.
- * @returns {Bluebird<User.Books>}
+ * @returns {Bluebird<any[]>}
  */
-export function getUserBorrowedBooks(userId: ID): Bluebird<User.Books> {
+export function getUserBorrowedBooks(userId: ID): Bluebird<any[]> {
   return Bluebird.resolve(Model.Borrow
     .findAll({
       where: {
@@ -83,15 +83,8 @@ export function getUserBorrowedBooks(userId: ID): Bluebird<User.Books> {
         dateOfReturn: null
       }
     }))
-    .then((books: any[]) => {
-      let lib: User.Books = {
-        userId: userId,
-        booksId: []
-      };
-      for(let b of books) {
-        lib.booksId.push(b.get({plain: true}).bookId);
-      }
-      return lib;
+    .map((book: any) => {
+      return book.get({plain: true});
     });
 }
 

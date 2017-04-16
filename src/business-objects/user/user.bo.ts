@@ -4,7 +4,7 @@ import { User, Book } from '../../lib';
 import { ID }         from '../../lib';
 
 /**
- * Gather the list of all books fot the given user
+ * Gather the list of all books originally owned by the given user
  * (identified by the given ID).
  * If the user hasn't any books yet, returns an object
  * with an empty array.
@@ -15,6 +15,29 @@ export function getUserLibrary(userId: ID): Bluebird<User.Books> {
   return services
     .getUserBooks(userId)
     .then((books: Book.Raw[]) => {
+      let lib: User.Books = {
+        userId: userId,
+        booksId: []
+      };
+      for(let b of books) {
+        lib.booksId.push(b.bookId);
+      }
+      return lib;
+    });
+}
+
+/**
+ * Gather the list of all books borrowed by the given user
+ * (identified by the given ID).
+ * If the user hasn't borrowed books yet, returns an object
+ * with an empty array.
+ * @param userId The user's ID.
+ * @returns {Bluebird<User.Books>}
+ */
+export function getUserBorrowedBooks(userId: ID): Bluebird<User.Books> {
+  return services
+    .getUserBorrowedBooks(userId)
+    .then((books: any[]) => {
       let lib: User.Books = {
         userId: userId,
         booksId: []

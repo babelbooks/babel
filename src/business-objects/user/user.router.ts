@@ -21,6 +21,28 @@ router.get('/test', (req: express.Request, res: express.Response) => {
 });
 
 /**
+ * GET /:userID
+ *
+ * Returns an User.Info object (sanitized) as json if the request was correct.
+ * Returns a 400 BAD REQUEST along with a json object describing
+ * the error if there was an error.
+ */
+router.get('/:userID', (req: express.Request, res: express.Response) => {
+  return OMUser
+    .getUserInfo(req.params['userID'])
+    .then((info: User.Info) => {
+      return res
+        .status(200)
+        .json(info);
+    })
+    .catch((err: Error) => {
+      return res
+        .status(400)
+        .json(err);
+    });
+});
+
+/**
  * GET /books/:userID
  *
  * Returns an User.Books object as json if the request was correct.
@@ -44,19 +66,20 @@ router.get('/books/:userID', (req: express.Request, res: express.Response) => {
 });
 
 /**
- * GET /:userID
+ * GET /books/borrowed/:userID
  *
- * Returns an User.Info object (sanitized) as json if the request was correct.
+ * Returns an User.Books object as json if the request was correct.
+ * Note that this includes an user with no borrowed book yet.
  * Returns a 400 BAD REQUEST along with a json object describing
  * the error if there was an error.
  */
-router.get('/:userID', (req: express.Request, res: express.Response) => {
+router.get('/books/borrowed/:userID', (req: express.Request, res: express.Response) => {
   return OMUser
-    .getUserInfo(req.params['userID'])
-    .then((info: User.Info) => {
+    .getUserBorrowedBooks(req.params['userID'])
+    .then((books: User.Books) => {
       return res
         .status(200)
-        .json(info);
+        .json(books);
     })
     .catch((err: Error) => {
       return res
