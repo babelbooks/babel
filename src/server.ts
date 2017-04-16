@@ -1,5 +1,6 @@
 import * as express     from 'express';
 import * as bodyparser  from 'body-parser';
+import * as cors        from 'cors';
 
 import {default as userRouter} from './business-objects/user/user.router';
 import {default as bookRouter} from './business-objects/book/book.router';
@@ -8,16 +9,16 @@ import {default as bookRouter} from './business-objects/book/book.router';
 const app : any = express();
 
 // Configure server app
-app.set('port', process.env.PORT || 3000);
-app.use((req:any, res:any, next:any)=> {
-  // TODO: better use of that (allow only pres server)
-  res.header('Access-Control-Allow-Origin', '*');
-  next();
-});
+app.set('port', process.env.BB_BABEL_PORT || 3000);
+app.use(cors({
+  origin: process.env.BB_PRES_URL || '*',
+  optionsSuccessStatus: 200 // Some legacy browsers (IE11, various SmartTVs) choke on 204
+}));
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({
   extended: true
 }));
+
 app.use('/user', userRouter);
 app.use('/book', bookRouter);
 
