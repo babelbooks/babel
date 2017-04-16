@@ -1,4 +1,5 @@
 import * as Bluebird    from 'bluebird';
+import { Transaction }  from 'sequelize';
 import { database }     from './orm';
 import { Model }        from './orm';
 import { User, Book }   from '../lib';
@@ -41,7 +42,12 @@ export function addUser(user: User.Info): Bluebird<any> {
     }))
     .then((users: any[]) => {
       if(users.length == 0) {
-        return Model.User.create(sanitizeUserForInsert(user));
+        return database.transaction((t: Transaction) => {
+          return Model.User
+            .create(sanitizeUserForInsert(user), {
+              transaction: t
+            });
+          });
       }
       // Oops, this username already exists !
       return Bluebird.reject(new Error('An User with the given username already exists.'));
@@ -135,16 +141,18 @@ export function getUserReadingBooks(userId: ID): Bluebird<User.Books> {
  */
 export function borrowBook(userId: ID, bookId: ID): Bluebird<void> {
   return Bluebird
-    .resolve(database.query(
-      'select newBorrowing(:userId, :bookId) as res',
-      {
-        replacements: {
-          userId: userId,
-          bookId: bookId
-        },
-        type: database.QueryTypes.SELECT
-      })
-    )
+    .resolve(database.transaction((t: Transaction) => {
+      return database.query(
+        'select newBorrowing(:userId, :bookId) as res',
+        {
+          replacements: {
+            userId: userId,
+            bookId: bookId
+          },
+          type: database.QueryTypes.SELECT,
+          transaction: t
+        });
+    }))
     .then((res: any[]) => {
       if(res && res[0] && res[0].res == 1) {
         // That's a success
