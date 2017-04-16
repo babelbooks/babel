@@ -1,4 +1,5 @@
-import * as express from 'express';
+import * as express     from 'express';
+import * as bodyparser  from 'body-parser';
 
 import {default as userRouter} from './business-objects/user/user.router';
 import {default as bookRouter} from './business-objects/book/book.router';
@@ -7,12 +8,16 @@ import {default as bookRouter} from './business-objects/book/book.router';
 const app : any = express();
 
 // Configure server app
+app.set('port', process.env.PORT || 3000);
 app.use((req:any, res:any, next:any)=> {
   // TODO: better use of that (allow only pres server)
   res.header('Access-Control-Allow-Origin', '*');
   next();
 });
-app.set('port', process.env.PORT || 3000);
+app.use(bodyparser.json());
+app.use(bodyparser.urlencoded({
+  extended: true
+}));
 app.use('/user', userRouter);
 app.use('/book', bookRouter);
 
