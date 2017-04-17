@@ -8,6 +8,17 @@ import { Model }          from '../access/orm';
  * @param passport The passport object to configure.
  */
 export function configPassport(passport: PassportStatic): void {
+  // Configure serialization
+  passport.serializeUser(function(user, done) {
+    done(null, user);
+  });
+
+  // Configure deserialization
+  passport.deserializeUser(function(user, done) {
+    done(null, user);
+  });
+
+  // Configure local strategy
   passport.use(new Strategy((username: string, pass: any, done: (...args: any[]) => any) => {
     console.log('Trying to find an user...');
     return Model.User

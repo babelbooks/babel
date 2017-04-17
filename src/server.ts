@@ -1,7 +1,9 @@
-import * as express     from 'express';
-import * as bodyparser  from 'body-parser';
-import * as cors        from 'cors';
-import * as passport    from 'passport';
+import * as express       from 'express';
+import * as bodyparser    from 'body-parser';
+import * as cookieparser  from 'cookie-parser';
+import * as session       from 'express-session';
+import * as cors          from 'cors';
+import * as passport      from 'passport';
 
 import { configPassport }       from './auth/auth.config';
 import { ensureAuthenticated }  from './auth/auth';
@@ -22,6 +24,12 @@ app.use(cors({
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({
   extended: true
+}));
+app.use(cookieparser());
+app.use(session({
+  secret: process.env.BB_SECRET_SESSION || 'my very secret thing',
+  resave: true,
+  saveUninitialized: true
 }));
 
 configPassport(passport);
