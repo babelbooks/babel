@@ -16,35 +16,69 @@ Only build:
 gulp build
 ```
 
-## Mocks services for sprint 1
-### GET /user/:userID
-```js
+## Services
+### User
+#### GET /user/:userId
+```json
 {
-    userID: User.ID;
-    username: string;
-    lastName: string;
-    firstName: string;
-    points: number;
-    score: number;
-    signUpDate: Date;
+    "userId": ID,
+    "username": string,
+    "lastName": string,
+    "firstName": string,
+    "points": number,
+    "score": number,
+    "signUpDate": Date
 }
 ```
 
-### GET /user/books/:userID
-```js
+#### GET /user/:userId/books
+```json
 {
-  userID: ID;
-  booksID: Book.ID[];
+  "userId": ID,
+  "booksId": ID[]
 }
 ```
 
-### GET /book/:bookID
-```js
+#### GET /user/:userId/books/borrowed
+```json
 {
-   id: Book.ID;
-   isbn: number;
-   title: string;
-   genres: string[];
-   author: string;
+  "userId": ID,
+  "booksId": ID[]
+}
+```
+
+#### GET /user/:userId/books/reading
+```json
+{
+  "userId": ID,
+  "booksId": ID[]
+}
+```
+
+#### PUT /user
+The provided user must have the following shape:
+```json
+{
+  "user" : {
+    "username": string,
+    "lastName": string,
+    "firstName": string
+  }
+}
+```
+Other meaningful fields will be erased.
+Other fields will cause an error.
+
+If successful, the result will be a `201 Created` header.
+
+### Book
+#### GET /book/:bookId
+```json
+{
+   "bookId": ID,
+   "isbn": number,
+   "title": string,
+   "genres": string[],
+   "author": string
 }
 ```
