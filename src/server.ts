@@ -1,9 +1,14 @@
 import * as express     from 'express';
 import * as bodyparser  from 'body-parser';
 import * as cors        from 'cors';
+import * as passport    from 'passport';
+
+import { configPassport }       from './auth/auth.config';
+import { ensureAuthenticated }  from './auth/auth';
 
 import {default as userRouter} from './business-objects/user/user.router';
 import {default as bookRouter} from './business-objects/book/book.router';
+import {default as authRouter} from './auth/auth.router';
 
 // Create server app
 const app : any = express();
@@ -19,8 +24,12 @@ app.use(bodyparser.urlencoded({
   extended: true
 }));
 
-app.use('/user', userRouter);
-app.use('/book', bookRouter);
+configPassport(passport);
+
+app.use(passport.initialize());
+app.use('/auth', authRouter);
+app.use('/user', ensureAuthenticated, userRouter);
+app.use('/book', ensureAuthenticated, bookRouter);
 
 // Run the server
 app.listen(app.get('port'), () => {
