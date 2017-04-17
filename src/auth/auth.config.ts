@@ -1,3 +1,4 @@
+import * as Crypto        from 'crypto';
 import { PassportStatic } from 'passport';
 import { Strategy }       from 'passport-local';
 import { Model }          from '../access/orm';
@@ -21,11 +22,15 @@ export function configPassport(passport: PassportStatic): void {
   // Configure local strategy
   passport.use(new Strategy((username: string, pass: any, done: (...args: any[]) => any) => {
     console.log('Trying to find an user...');
+    let hash = Crypto.createHash('sha512');
+    hash.update(pass);
+    let digest = new Buffer(hash.digest('hex'), 'hex');
+    console.log(digest);
     return Model.User
       .findOne({
         where: {
           username: username,
-          // password: pass
+          password: digest
         }
       })
       .then((user: any) => {
