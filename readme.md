@@ -55,7 +55,7 @@ gulp build
 }
 ```
 
-#### PUT /user
+#### PUT /user/add
 The provided user must have the following shape:
 ```json
 {
@@ -76,9 +76,61 @@ If successful, the result will be a `201 Created` header.
 ```json
 {
    "bookId": ID,
+   "metaDataId": ID,
    "isbn": number,
    "title": string,
    "genres": string[],
-   "author": string
+   "author": string,
+   "edition": string,
+   "majorForm": string,
+   "cover": string
+}
+```
+
+#### GET /available
+```json
+[{
+   "bookId": ID,
+   "metaDataId": ID,
+   "userId": ID,
+   "available": boolean
+}]
+```
+
+#### PUT /book/add
+The provided book must have the following shape:
+```json
+{
+  "userId" : ID,
+  "metaDataId": ID
+}
+```
+
+OR:
+```json
+{
+  "userId" : ID,
+  "metaData": {
+    "isbn": number,
+    "title": string,
+    "genres": string[],
+    "author": string,
+    "edition": string,
+    "majorForm": string,
+    "cover": string
+  }
+}
+```
+Other meaningful fields will be erased.
+Other fields will cause an error.
+
+Please note that the second form will try to create metadata as well.
+
+#### POST /read
+The provided object must have the following shape:
+
+```json
+{
+  "bookId" : ID
 }
 ```
