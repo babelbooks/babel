@@ -6,6 +6,8 @@ import { NextFunction } from 'express';
 
 let router: Router = Router();
 
+// router.post('/login', Passport.authenticate('local'));
+
 router.post('/login', (req: Request, res: Response, next: NextFunction) => {
   console.log('POST /login');
   console.log('Body is:');
@@ -20,6 +22,16 @@ router.post('/login', (req: Request, res: Response, next: NextFunction) => {
     console.log(info);
     console.log('User:');
     console.log(user);
+    console.log('Logging in...');
+    req.login(user, (err: any) => {
+      if(err) {
+        console.log('ERROR: unable to log in');
+        console.log(err);
+        return next(err);
+      }
+      console.log('Successfully logged in. Calling next.');
+      return next();
+    });
     return res.status(200).json({
       authenticated: true
     });

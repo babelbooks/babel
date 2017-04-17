@@ -1,6 +1,5 @@
 import * as express       from 'express';
 import * as bodyparser    from 'body-parser';
-import * as cookieparser  from 'cookie-parser';
 import * as session       from 'express-session';
 import * as cors          from 'cors';
 import * as passport      from 'passport';
@@ -25,16 +24,23 @@ app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({
   extended: true
 }));
-app.use(cookieparser());
 app.use(session({
   secret: process.env.BB_SECRET_SESSION || 'my very secret thing',
   resave: true,
-  saveUninitialized: true
+  saveUninitialized: true,
+  cookie: {                         // A cookie-based sessions
+    secure: false,                    // Because without https, the client won't send it back to us if this is true
+    sameSite: true,                   // To prevent CSRF attacks
+    httpOnly: false                   // To handle xhr requests, and some other
+
+    // NOTE: by not providing "maxAge", we create "session" cookies
+  }
 }));
 
 configPassport(passport);
 
 app.use(passport.initialize());
+app.use(passport.session());
 app.use('/auth', authRouter);
 app.use('/user', ensureAuthenticated, userRouter);
 app.use('/book', ensureAuthenticated, bookRouter);
