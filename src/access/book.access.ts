@@ -4,7 +4,7 @@ import { Model }        from './orm';
 import { database }     from './orm';
 import { Book }         from '../lib';
 import { ID }           from '../lib';
-import { sanitizeMetadataForInsert }  from './sanitizer';
+import { sanitizeBookForInsert }  from './sanitizer';
 
 /**
  * Returns the raw book identified by the given ID.
@@ -43,40 +43,21 @@ export function getAllAvailableBooks(): Bluebird<Book.Raw[]> {
 }
 
 /**
- * Adds the given book along with it's metadata if not provided as an ID.
- * It also removes the metadata's ID if provided with the object,
- * as long as the book's ID.
+ * Adds the given book to the database.
+ * It also removes the book's ID if provided with the object.
  * If something went wrong somewhere (i.e. the provided user ID
  * doesn't match any known user, or something similar),
  * returns a promise rejection.
- * @param userID The user's ID.
- * @param bookData The associated metadata or metadata ID.
+ * @param bookData The basic information about the book to insert.
  * @returns {Bluebird<any>}
  */
-export function addBook(userID: ID, bookData: Book.Metadata | ID): Bluebird<any> {
-  return Bluebird
-    .try(() => {
-      if(typeof bookData == 'object') {
-        return database.transaction((t: Transaction) => {
-          return Model.Metadata
-            .create(sanitizeMetadataForInsert(bookData), {
-              transaction: t
-            })
-            .then((res: any) => {
-              if(res) {
-                return Model.Book.create({userID: userID, bookId: res.get({plain: true}).metaDataId});
-              }
-              return Bluebird.reject(new Error('Unable to create the provided metadata.'));
-            });
-        });
-      }
-      return database.transaction((t: Transaction) => {
-        return Model.Book
-          .create({userID: userID, bookId: bookData}, {
-            transaction: t
-          });
+export function addBook(bookData: Book.Raw): Bluebird<any> {
+  return Bluebird.resolve(database.transaction((t: Transaction) => {
+    return Model.Book
+      .create(sanitizeBookForInsert(bookData), {
+        transaction: t
       });
-    });
+    }));
 }
 
 /**
