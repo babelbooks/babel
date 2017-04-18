@@ -27,7 +27,7 @@ export function configPassport(passport: PassportStatic): void {
       .findOne({
         where: {
           username: username,
-          password: new Buffer(hash.digest('hex'), 'hex')
+          password: '0x' + hash.digest('hex')
         }
       })
       .then((user: any) => {
