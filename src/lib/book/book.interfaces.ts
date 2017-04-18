@@ -7,14 +7,14 @@ export interface Raw {
   bookId: ID;
 
   /**
-   * The book's metadata ID.
+   * The book's ISBN, if it has one.
    */
-  bookMetaDataId: ID;
+  isbn?: number | string;
 
   /**
-   * The book's owner ID.
+   * The book's original owner ID.
    */
-  userId: ID;
+  origin: ID;
 
   /**
    * Whether or not the book is available to borrow.
@@ -22,52 +22,30 @@ export interface Raw {
   available: boolean;
 }
 
-export interface Metadata {
+export interface Borrowing {
   /**
-   * The metadata's unique ID.
+   * The borrowing's ID.
    */
-  metaDataId: ID;
+  borrowId: ID;
 
   /**
-   * The book's unique ID to which
-   * these metadata are for.
+   * The ID of the user who borrowed the book.
+   */
+  userId: ID;
+
+  /**
+   * The ID of the borrowed book.
    */
   bookId: ID;
 
   /**
-   * The books ISBN, if it exists..
+   * The timestamp at which the book was borrowed.
    */
-  isbn?: number;
+  beginDate: Date;
 
   /**
-   * The book's title.
-   * TODO: languages.
+   * The date at which the book was given back.
+   * Set to undefined if not given back yet.
    */
-  title: string;
-
-  /**
-   * The list of genres the book is known of.
-   */
-  genres: string[];
-
-  /**
-   * The author's name.
-   */
-  author: string;
-
-  /**
-   * The book's edition (one of them).
-   */
-  edition?: string;
-
-  /**
-   * Whether if the book is a novel, a short story
-   * or anything else.
-   */
-  majorForm?: string;
-
-  /**
-   * An url to the book's cover.
-   */
-  cover?: string;
+  dateOfReturn?: Date;
 }

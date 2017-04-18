@@ -1,10 +1,15 @@
 import { ID } from '../shared/id.type';
 
+/**
+ * The list of book that an user has.
+ * They can belong to him, or he may rent them,
+ * or he may only be their original owner.
+ */
 export interface Books {
   /**
    * The user's ID/
    */
-  userId: ID;
+  username: ID;
 
   /**
    * The list of all books' IDs for a given user.
@@ -12,21 +17,26 @@ export interface Books {
   booksId: ID[];
 }
 
+/**
+ * Global information about an user.
+ * It may carry the user's hashed password.
+ * It's hashed, so it's ok as long as we:
+ *    Never write it somewhere on the disk, except for database.
+ *    Never send it back anywhere; it must stay here.
+ *    Never print it into the logs; just in case.
+ * Therefore, before any manipulation, we must use the functions
+ * provided in src/access/sanitizer.ts.
+ */
 export interface Info {
   /**
    * The user's ID.
    */
-  userId: ID;
+  username: ID;
 
   /**
-   * The user's identifier.
+   * The user's hashed password.
    */
-  username: string;
-
-  /**
-   * The user's last name.
-   */
-  lastName: string;
+  password?: string;
 
   /**
    * The user's first name.
@@ -34,14 +44,19 @@ export interface Info {
   firstName: string;
 
   /**
-   * The user's number of points (=BabelBooks' money).
+   * The user's last name.
    */
-  points: number;
+  lastName: string;
 
   /**
    * The user's score (gamification).
    */
   score: number;
+
+  /**
+   * The user's number of points (=BabelBooks' money).
+   */
+  points: number;
 
   /**
    * The timestamp at which the user registered.
