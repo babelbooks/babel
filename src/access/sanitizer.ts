@@ -1,29 +1,16 @@
-import { Book } from '../lib';
 import { User } from '../lib';
 
-export function sanitizeUser(user: any): any {
+export function sanitizeUser(user: User.Info): User.Info {
+  // The password must never be broadcast, so we delete it
+  // The rest is fine
   delete user.password;
   return user;
 }
 
 export function sanitizeUserForInsert(user: User.Info): any {
-  delete user.userId;
+  // Delete values which can cause a mess and let database handle default values
   delete user.signUpDate;
-  user.points = 2;        // TODO: define default value somewhere
-  user.score = 0;         // TODO: define default value somewhere
+  delete user.points;
+  delete user.score;
   return user;
-}
-
-export function sanitizeMetadataForInsert(book: Book.Metadata): any {
-  delete book.bookId;
-  delete book.metaDataId;
-  let s: string = '';
-  for(let genre of book.genres) {
-    s += genre + ',';
-  }
-  delete book.genres;
-  let b = Object.assign(book);
-  // TODO: add the following line when db will handle genres
-  // b.genres = s.substring(0, s.length - 1);
-  return b;
 }
