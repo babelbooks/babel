@@ -21,16 +21,13 @@ export function configPassport(passport: PassportStatic): void {
 
   // Configure local strategy
   passport.use(new Strategy((username: string, pass: any, done: (...args: any[]) => any) => {
-    console.log('Trying to find an user...');
     let hash = Crypto.createHash('sha512');
     hash.update(pass);
-    let digest = new Buffer(hash.digest('hex'), 'hex');
-    console.log(digest);
     return Model.User
       .findOne({
         where: {
           username: username,
-          password: digest
+          password: new Buffer(hash.digest('hex'), 'hex')
         }
       })
       .then((user: any) => {
