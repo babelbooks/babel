@@ -57,8 +57,8 @@ CREATE TABLE `User` (
   `password` varchar(255) NOT NULL,
   `firstName` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `lastName` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
-  `points` int(11) NOT NULL,
-  `score` bigint(20) DEFAULT NULL,
+  `points` int(11) DEFAULT 2,
+  `score` bigint(20) DEFAULT 0,
   `signUpDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
