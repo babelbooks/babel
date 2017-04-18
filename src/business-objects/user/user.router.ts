@@ -121,6 +121,11 @@ router.get('/:userId/books/reading', (req: express.Request, res: express.Respons
  * describing the error.
  */
 router.put('/add', (req: express.Request, res: express.Response) => {
+  if(!req.body.user) {
+    return res.status(400).json(new Error(
+      'Missing "user" parameter in request body.'
+    ));
+  }
   return OMUser
     .addUser(req.body.user)
     .then(() => {
