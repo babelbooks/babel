@@ -43,7 +43,7 @@ options.define = {
 /**
  * The object representing our database.
  */
-export let database = new Sequelize('BabelDB', 'root', 'admin', options);
+export let database = new Sequelize('BabelDB', process.env.BB_DB_USER || 'borges', process.env.BB_DB_PASSWORD || 'devonly', options);
 
 /**
  * The domain's model that will be used to manipulate
@@ -56,19 +56,16 @@ export namespace Model {
   export let User = database.import('./models/user');
   export let Book = database.import('./models/book');
   export let Borrow = database.import('./models/borrow');
-  export let Metadata = database.import('./models/bookmetadata');
 
   // Then complete its associations
   // Borrow has book and user associations (1:n)
   Borrow.belongsTo(User, {foreignKey: 'userId'});
   Borrow.belongsTo(Book, {foreignKey: 'bookId'});
-  User.hasMany(Borrow, {foreignKey: 'userId'});
+  User.hasMany(Borrow, {foreignKey: 'userID'});
   Book.hasMany(Borrow, {foreignKey: 'bookId'});
 
-  // Book has user (original owner) and bookmetadata association (1:n)
+  // Book has user (original owner) (1:n)
   Book.belongsTo(User, {foreignKey: 'userId'});
-  Book.belongsTo(Metadata, {foreignKey: 'bookMetaDataId', as: 'metadata'});
-  User.hasMany(Book, {foreignKey: 'bookId'});
-  Metadata.hasMany(Book, {foreignKey: 'bookId'});
+  User.hasMany(Book, {foreignKey: 'userId'});
 }
 
