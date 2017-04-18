@@ -12,7 +12,7 @@ import { sanitizeUserForInsert }  from './sanitizer';
  * If no user exists with the given ID,
  * returns a promise rejection.
  * @param userId The user's ID.
- * @returns {Bluebird<User.Metadata>}
+ * @returns {Bluebird<User.Info>}
  */
 export function getUserById(userId: ID): Bluebird<User.Info> {
   return Bluebird.resolve(Model.User
@@ -35,23 +35,12 @@ export function getUserById(userId: ID): Bluebird<User.Info> {
  */
 export function addUser(user: User.Info): Bluebird<any> {
   return Bluebird
-    .resolve(Model.User.findAll({
-      where : {
-        username: user.username
-      }
-    }))
-    .then((users: any[]) => {
-      if(users.length == 0) {
-        return database.transaction((t: Transaction) => {
-          return Model.User
-            .create(sanitizeUserForInsert(user), {
-              transaction: t
-            });
-          });
-      }
-      // Oops, this username already exists !
-      return Bluebird.reject(new Error('An User with the given username already exists.'));
-    });
+    .resolve(database.transaction((t: Transaction) => {
+      return Model.User
+        .create(sanitizeUserForInsert(user), {
+          transaction: t
+        });
+      }));
 }
 
 /**
@@ -65,7 +54,7 @@ export function getUserBooks(userId: ID): Bluebird<Book.Raw[]> {
   return Bluebird.resolve(Model.Book
     .findAll({
       where: {
-        userId: userId
+        origin: userId
       }
     }))
     .map((book: any) => {
@@ -81,16 +70,17 @@ export function getUserBooks(userId: ID): Bluebird<Book.Raw[]> {
  * @param userId The user's ID.
  * @returns {Bluebird<any[]>}
  */
-export function getUserBorrowedBooks(userId: ID): Bluebird<any[]> {
+export function getUserBorrowedBooks(userId: ID): Bluebird<Book.Raw[]> {
   return Bluebird.resolve(Model.Borrow
     .findAll({
       where: {
         userId: userId,
         dateOfReturn: null
-      }
+      },
+      include: [Model.Book]
     }))
-    .map((book: any) => {
-      return book.get({plain: true});
+    .map((res: any) => {
+      return res.get({plain: true}).book;
     });
 }
 
@@ -102,7 +92,7 @@ export function getUserBorrowedBooks(userId: ID): Bluebird<any[]> {
  * @param userId The user's ID.
  * @returns {Bluebird<User.Books>}
  */
-export function getUserReadingBooks(userId: ID): Bluebird<any[]> {
+export function getUserReadingBooks(userId: ID): Bluebird<Book.Raw[]> {
   return Bluebird.resolve(Model.Borrow
     .findAll({
       where: {
@@ -117,7 +107,7 @@ export function getUserReadingBooks(userId: ID): Bluebird<any[]> {
       }]
     }))
     .map((res: any) => {
-      return res.get({plain: true});
+      return res.get({plain: true}).book;
     });
 }
 
