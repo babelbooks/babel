@@ -1,6 +1,5 @@
 import * as Bluebird  from 'bluebird';
 import * as services  from '../../access/book.access';
-import * as metadata  from '../../access/metadata.access';
 import { Book, ID }   from '../../lib';
 
 /**
@@ -9,10 +8,10 @@ import { Book, ID }   from '../../lib';
  * If no bok is known for this ID,
  * returns an undefined object.
  * @param bookId
- * @returns {Bluebird<Book.Metadata>}
+ * @returns {Bluebird<Book.Raw>}
  */
-export function getBookInfo(bookId: ID): Bluebird<Book.Metadata> {
-  return metadata.getBookMetadata(bookId);
+export function getBookById(bookId: ID): Bluebird<Book.Raw> {
+  return services.getBookById(bookId);
 }
 
 /**
@@ -25,13 +24,12 @@ export function getAllAvailableBooks(): Bluebird<Book.Raw[]> {
 }
 
 /**
- * Adds the given book with the associated metadata, if provided.
- * @param userId The ID of the user who wants to add the book.
- * @param metadata The metadata or metadata ID associated to the book.
+ * Adds the given book to the database.
+ * @param book Basic information about the book to insert.
  * @returns {Bluebird<any>}
  */
-export function addBook(userId: ID, metadata: Book.Metadata | ID): Bluebird<any> {
-  return services.addBook(userId, metadata);
+export function addBook(book: Book.Raw): Bluebird<any> {
+  return services.addBook(book);
 }
 
 /**

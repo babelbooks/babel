@@ -23,17 +23,17 @@ router.get('/test', (req: express.Request, res: express.Response) => {
 /**
  * GET /:bookId
  *
- * Returns an Book.Metadata object as json if the request was correct.
+ * Returns an Book.Raw object as json if the request was correct.
  * Returns a 400 BAD REQUEST along with a json object describing
  * the error if there was an error.
  */
 router.get('/:bookId', (req: express.Request, res: express.Response) => {
   return OMBook
-    .getBookInfo(req.params['bookId'])
-    .then((info: Book.Metadata) => {
+    .getBookById(req.params['bookId'])
+    .then((book: Book.Raw) => {
       return res
         .status(200)
-        .json(info);
+        .json(book);
     });
 });
 
@@ -55,24 +55,21 @@ router.get('/available', (req: express.Request, res: express.Response) => {
 
 /**
  * PUT /add
- * userId: ID
- * metaData: Book.Metadata || metaDataId: ID
+ * book: Book.Raw
  *
  * Tries to create a book from the given object,
  * and returns a 201 CREATED status if successful.
- * If metaData is provided instead of metaDataId, tries
- * to create metadata as well.
  * Otherwise, returns a 400 BAD REQUEST along with a json object
  * describing the error.
  */
 router.put('/add', (req: express.Request, res: express.Response) => {
-  if(!req.body.userId || !(req.body.metaData || req.body.metaDataId)) {
+  if(!req.body.book) {
     return res.status(400).json(new Error(
-      'Missing field. It must have "userId" and one of "metaData" | "metaDataId".'
+      'Missing "book" parameter in request body.'
     ));
   }
   return OMBook
-    .addBook(req.body.userId, req.body.metaData || req.body.metaDataId)
+    .addBook(req.body.book)
     .then(() => {
       return res.status(201);
     })
