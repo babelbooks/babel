@@ -19,6 +19,7 @@ export function getUserLibrary(userId: ID): Bluebird<User.Books> {
         username: userId,
         booksId: []
       };
+      console.log(books.length);
       for(let b of books) {
         lib.booksId.push(b.bookId);
       }

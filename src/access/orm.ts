@@ -61,11 +61,11 @@ export namespace Model {
   // Borrow has book and user associations (1:n)
   Borrow.belongsTo(User, {foreignKey: 'userId'});
   Borrow.belongsTo(Book, {foreignKey: 'bookId'});
-  User.hasMany(Borrow, {foreignKey: 'userID'});
+  User.hasMany(Borrow, {foreignKey: 'userId'});
   Book.hasMany(Borrow, {foreignKey: 'bookId'});
 
   // Book has user (original owner) (1:n)
-  Book.belongsTo(User, {foreignKey: 'userId'});
-  User.hasMany(Book, {foreignKey: 'userId'});
+  Book.belongsTo(User, {foreignKey: 'origin'});
+  User.hasMany(Book, {foreignKey: 'origin'});
 }
 

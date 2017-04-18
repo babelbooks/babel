@@ -38,12 +38,12 @@ router.get('/:bookId', (req: express.Request, res: express.Response) => {
 });
 
 /**
- * GET /available
+ * GET all/available
  *
  * Gather all books available for borrowing.
  * If no book is available, returns an empty array.
  */
-router.get('/available', (req: express.Request, res: express.Response) => {
+router.get('/all/available', (req: express.Request, res: express.Response) => {
   return OMBook
     .getAllAvailableBooks()
     .then((books: Book.Raw[]) => {
