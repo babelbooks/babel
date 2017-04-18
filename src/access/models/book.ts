@@ -8,20 +8,16 @@ module.exports = function(sequelize: any, DataTypes: any) {
       primaryKey: true,
       autoIncrement: true
     },
-    bookMetaDataId: {
+    isbn: {
       type: DataTypes.BIGINT,
-      allowNull: false,
-      references: {
-        model: 'bookmetadata',
-        key: 'metaDataId'
-      }
+      allowNull: true
     },
-    userId: {
-      type: DataTypes.BIGINT,
+    origin: {
+      type: DataTypes.STRING(255),
       allowNull: false,
       references: {
         model: 'user',
-        key: 'userId'
+        key: 'username'
       }
     },
     available: {

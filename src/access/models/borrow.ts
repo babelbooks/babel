@@ -17,11 +17,11 @@ module.exports = function(sequelize: any, DataTypes: any) {
       }
     },
     userId: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING(255),
       allowNull: false,
       references: {
         model: 'user',
-        key: 'userId'
+        key: 'username'
       }
     },
     beginDate: {
