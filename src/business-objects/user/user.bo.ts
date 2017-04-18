@@ -16,7 +16,7 @@ export function getUserLibrary(userId: ID): Bluebird<User.Books> {
     .getUserBooks(userId)
     .then((books: Book.Raw[]) => {
       let lib: User.Books = {
-        userId: userId,
+        username: userId,
         booksId: []
       };
       for(let b of books) {
@@ -37,9 +37,9 @@ export function getUserLibrary(userId: ID): Bluebird<User.Books> {
 export function getUserBorrowedBooks(userId: ID): Bluebird<User.Books> {
   return services
     .getUserBorrowedBooks(userId)
-    .then((books: any[]) => {
+    .then((books: Book.Raw[]) => {
       let lib: User.Books = {
-        userId: userId,
+        username: userId,
         booksId: []
       };
       for(let b of books) {
@@ -60,9 +60,9 @@ export function getUserBorrowedBooks(userId: ID): Bluebird<User.Books> {
 export function getUserReadingBooks(userId: ID): Bluebird<User.Books> {
   return services
     .getUserReadingBooks(userId)
-    .then((books: any[]) => {
+    .then((books: Book.Raw[]) => {
       let lib: User.Books = {
-        userId: userId,
+        username: userId,
         booksId: []
       };
       for(let b of books) {
