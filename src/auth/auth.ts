@@ -4,7 +4,7 @@ export function ensureAuthenticated(req: Request, res: Response, next: NextFunct
   if(req.isAuthenticated()) {
     return next();
   }
-  res.status(401).json({
+  return res.status(401).json({
     error: 'Request not authenticated'
   });
 }
