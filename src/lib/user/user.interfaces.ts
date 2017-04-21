@@ -12,9 +12,9 @@ export interface Books {
   username: ID;
 
   /**
-   * The list of all books' IDs for a given user.
+   * The list of all books' IDs and ISBNs for a given user.
    */
-  booksId: ID[];
+  books: {bookId: ID, isbn: ID}[];
 }
 
 /**
