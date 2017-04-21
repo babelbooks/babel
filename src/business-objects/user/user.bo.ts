@@ -17,11 +17,14 @@ export function getUserLibrary(userId: ID): Bluebird<User.Books> {
     .then((books: Book.Raw[]) => {
       let lib: User.Books = {
         username: userId,
-        booksId: []
+        books: []
       };
       console.log(books.length);
       for(let b of books) {
-        lib.booksId.push(b.bookId);
+        lib.books.push({
+          bookId: b.bookId,
+          isbn: b.isbn ? b.isbn : +b.bookId + Book.META_ISBN
+        });
       }
       return lib;
     });
@@ -41,10 +44,13 @@ export function getUserBorrowedBooks(userId: ID): Bluebird<User.Books> {
     .then((books: Book.Raw[]) => {
       let lib: User.Books = {
         username: userId,
-        booksId: []
+        books: []
       };
       for(let b of books) {
-        lib.booksId.push(b.bookId);
+        lib.books.push({
+          bookId: b.bookId,
+          isbn: b.isbn ? b.isbn : +b.bookId + Book.META_ISBN
+        });
       }
       return lib;
     });
@@ -64,10 +70,13 @@ export function getUserReadingBooks(userId: ID): Bluebird<User.Books> {
     .then((books: Book.Raw[]) => {
       let lib: User.Books = {
         username: userId,
-        booksId: []
+        books: []
       };
       for(let b of books) {
-        lib.booksId.push(b.bookId);
+        lib.books.push({
+          bookId: b.bookId,
+          isbn: b.isbn ? b.isbn : +b.bookId + Book.META_ISBN
+        });
       }
       return lib;
     });
