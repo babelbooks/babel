@@ -24,10 +24,9 @@ router.post('/login', (req: Request, res: Response, next: NextFunction) => {
       if(err) {
         return next(err);
       }
-      return next();
-    });
-    return res.status(200).json({
-      authenticated: true
+      return res.status(200).json({
+        authenticated: true
+      });
     });
   })(req, res, next);
 });
