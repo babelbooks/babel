@@ -3,6 +3,7 @@ import * as bodyparser  from 'body-parser';
 import * as session     from 'express-session';
 import * as cors        from 'cors';
 import * as passport    from 'passport';
+import * as morgan      from 'morgan';
 
 import { configPassport }       from './auth/auth.config';
 import { ensureAuthenticated }  from './auth/auth.middlewares';
@@ -48,6 +49,9 @@ app.use(session({
     // NOTE: by not providing "maxAge", we create "session" cookies
   }
 }));
+
+// Use logger
+app.use(morgan('dev'));
 
 // Configure passport (user authentication)
 configPassport(passport);
