@@ -17,7 +17,7 @@ import { sanitizeBookForInsert }  from './sanitizer';
 export function getBookById(bookId: ID): Bluebird<Book.Raw> {
   return Bluebird.resolve(Model.Book
     .findById(bookId))
-    .then((book: any) => {
+    .then((book: Instance<any>) => {
       if(!book) {
         return Bluebird.reject(new Error('No Book found with the ID: ' + bookId));
       }
@@ -38,7 +38,7 @@ export function getAllAvailableBooks(): Bluebird<Book.Raw[]> {
         available: true
       }
     }))
-    .map((book: any) => {
+    .map((book: Instance<any>) => {
       return book.get({plain: true});
     });
 }
@@ -80,20 +80,26 @@ export function addBook(bookData: Book.Raw): Bluebird<Book.Raw> {
 /**
  * Sets the given book as available.
  * If the book was already available, does nothing.
+ * TODO: is this enough ?
+ * TODO: only allows it if the book is possessed by the current user.
  * @param bookId The book's ID.
- * @returns {Bluebird<Promise>}
+ * @returns {Bluebird<Book.Raw>}
  */
-export function setBookRead(bookId: ID): Bluebird<any> {
-  return Bluebird.resolve(database.transaction((t: Transaction) => {
-    return Model.Book
-      .update({
-          available: true
-        },
-        {
-          where: {
-            bookId: bookId
+export function setBookRead(bookId: ID): Bluebird<Book.Raw> {
+  return Bluebird
+    .resolve(database.transaction((t: Transaction) => {
+      return Model.Book
+        .update({
+            available: true
           },
-          transaction: t
-        });
-  }));
+          {
+            where: {
+              bookId: bookId
+            },
+            transaction: t
+          });
+    }))
+    .then((book: Instance<any>) => {
+      return book.get({plain: true});
+    });
 }
