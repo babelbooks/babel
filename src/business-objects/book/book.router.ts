@@ -1,8 +1,14 @@
-import * as express from 'express';
-import * as OMBook  from './book.bo';
-import { Book }     from '../../lib';
+import * as express   from 'express';
+import * as OMBook    from './book.bo';
+import { Book }       from '../../lib';
+import { Authorized } from '../../auth/auth.middlewares';
 
-let router: express.Router = express.Router();
+/**
+ * The router associated to books.
+ * Configured hereinafter.
+ * @type {Router}
+ */
+export let router: express.Router = express.Router();
 
 /**
  * GET /test
@@ -100,4 +106,11 @@ router.post('/read', (req: express.Request, res: express.Response) => {
     });
 });
 
-export default router;
+/**
+ *
+ * @type {[Authorized]}
+ */
+export const noNeedToCheck: Authorized[] = [
+  {
+    path: '/test'
+  }];

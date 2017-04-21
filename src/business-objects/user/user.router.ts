@@ -1,8 +1,14 @@
-import * as express from 'express';
-import * as OMUser  from './user.bo';
-import { User }     from '../../lib';
+import * as express   from 'express';
+import * as OMUser    from './user.bo';
+import { User }       from '../../lib';
+import { Authorized } from '../../auth/auth.middlewares';
 
-let router: express.Router = express.Router();
+/**
+ * The router associated to users.
+ * Configured hereinafter.
+ * @type {Router}
+ */
+export let router: express.Router = express.Router();
 
 /**
  * GET /test
@@ -213,4 +219,16 @@ router.put('/add', (req: express.Request, res: express.Response) => {
     });
 });
 
-export default router;
+/**
+ * The paths this router consider as free to query
+ * without any authentication.
+ * @type {[Authorized]}
+ */
+export const noNeedToCheck: Authorized[] = [
+  {
+    path: '/add',
+    method: 'PUT'
+  },
+  {
+    path: '/test'
+  }];

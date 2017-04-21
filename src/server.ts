@@ -6,9 +6,10 @@ import * as passport    from 'passport';
 
 import { configPassport }       from './auth/auth.config';
 import { ensureAuthenticated }  from './auth/auth.middlewares';
+import { skipFor }              from './auth/auth.middlewares';
 
-import {default as userRouter}  from './business-objects/user/user.router';
-import {default as bookRouter}  from './business-objects/book/book.router';
+import * as user  from './business-objects/user/user.router';
+import * as book  from './business-objects/book/book.router';
 import {default as authRouter}  from './auth/auth.router';
 
 /**
@@ -55,8 +56,8 @@ app.use(passport.session());
 
 // Mount sub routers
 app.use('/auth', authRouter);
-app.use('/user', ensureAuthenticated, userRouter);
-app.use('/book', ensureAuthenticated, bookRouter);
+app.use('/user', skipFor(ensureAuthenticated, user.noNeedToCheck), user.router);
+app.use('/book', skipFor(ensureAuthenticated, book.noNeedToCheck), book.router);
 
 /**
  * Run the server.
