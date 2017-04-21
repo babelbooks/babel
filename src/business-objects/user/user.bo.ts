@@ -77,10 +77,21 @@ export function getUserReadingBooks(userId: ID): Bluebird<User.Books> {
  * Returns all user's information that can be safely
  * broadcast. I.e. some data such has the hashed password
  * won't be sent here.
- * @param userId
- * @returns {Bluebird<any>}
+ * @param userId The user's ID.
+ * @returns {Bluebird<User.Info>}
  */
 export function getUserInfo(userId: ID): Bluebird<User.Info> {
+  return services.getUserById(userId);
+}
+
+/**
+ * Returns all user's information about the current user that can be safely
+ * broadcast. I.e. some data such has the hashed password
+ * won't be sent here.
+ * @param userId The user's ID.
+ * @returns {Bluebird<User.Info>}
+ */
+export function getCurrentUser(userId: ID): Bluebird<User.Info> {
   return services.getUserById(userId);
 }
 
@@ -95,3 +106,32 @@ export function getUserInfo(userId: ID): Bluebird<User.Info> {
 export function addUser(user: User.Info): Bluebird<any> {
   return services.addUser(user);
 }
+
+/**
+ * Increments the points of the given user by n.
+ * Note: the points must NOT be null, or nothing will happen.
+ * Returns a sanitized version of the user BEFORE the update.
+ * @param userId The user to which add points.
+ * @param n The number of points to add.
+ * @returns {Bluebird<User.Info>}
+ */
+export function addPoints(userId: ID, n: number): Bluebird<User.Info> {
+  return services.addPoints(userId, n);
+}
+
+/**
+ * Increments the score of the given user by n.
+ * Note: the score must NOT be null, or nothing will happen.
+ * Returns a sanitized version of the user BEFORE the update.
+ * @param userId The user to which increase score.
+ * @param n The number to increase the score by.
+ * @returns {Bluebird<User.Info>}
+ */
+export function addScore(userId: ID, n: number): Bluebird<User.Info> {
+  return services.addScore(userId, n);
+}
+
+// export function updatePassword(userId: ID, oldPass: string, pass: string): Bluebird<any> {
+//   return services.updatePassword(pass);
+// }
+

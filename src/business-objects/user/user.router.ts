@@ -21,13 +21,38 @@ router.get('/test', (req: express.Request, res: express.Response) => {
 });
 
 /**
- * GET /:userId
+ * GET /me
  *
+ * Tries to gather information about the current user.
  * Returns an User.Info object (sanitized) as json if the request was correct.
  * Returns a 400 BAD REQUEST along with a json object describing
  * the error if there was an error.
  */
-router.get('/:userId', (req: express.Request, res: express.Response) => {
+router.get('/me', (req: express.Request, res: express.Response) => {
+  return OMUser
+    .getCurrentUser(req.session.passport.user.username)
+    .then((info: User.Info) => {
+      return res
+        .status(200)
+        .json(info);
+    })
+    .catch((err: Error) => {
+      return res
+        .status(400)
+        .json(err);
+    });
+});
+
+
+/**
+ * GET /other/:userId
+ *
+ * Tries to gather information about the given user.
+ * Returns an User.Info object (sanitized) as json if the request was correct.
+ * Returns a 400 BAD REQUEST along with a json object describing
+ * the error if there was an error.
+ */
+router.get('/other/:userId', (req: express.Request, res: express.Response) => {
   return OMUser
     .getUserInfo(req.params['userId'])
     .then((info: User.Info) => {
@@ -103,6 +128,58 @@ router.get('/:userId/books/reading', (req: express.Request, res: express.Respons
       return res
         .status(200)
         .json(books);
+    })
+    .catch((err: Error) => {
+      return res
+        .status(400)
+        .json(err);
+    });
+});
+
+/**
+ * POST /me/score
+ * n: number
+ *
+ * Tries to increment the score of the current user by n.
+ * If the current user has a NULL score, nothing will happen (still successful).
+ * If successful, returns a 200 status code alongside the previous version
+ * of the current user (before update).
+ * Otherwise, returns a 400 bad request status code along with an object
+ * describing the error.
+ */
+router.post('/me/score', (req: express.Request, res: express.Response) => {
+  return OMUser
+    .addScore(req.session.passport.user.username, req.body.n)
+    .then((resp: any) => {
+      return res
+        .status(200)
+        .json(resp);
+    })
+    .catch((err: Error) => {
+      return res
+        .status(400)
+        .json(err);
+    });
+});
+
+/**
+ * POST /me/points
+ * n: number
+ *
+ * Tries to increment the points of the current user by n.
+ * If the current user has a NULL number of points, nothing will happen (still successful).
+ * If successful, returns a 200 status code alongside the previous version
+ * of the current user (before update).
+ * Otherwise, returns a 400 bad request status code along with an object
+ * describing the error.
+ */
+router.post('/me/points', (req: express.Request, res: express.Response) => {
+  return OMUser
+    .addPoints(req.session.passport.user.username, req.body.n)
+    .then((resp: any) => {
+      return res
+        .status(200)
+        .json(resp);
     })
     .catch((err: Error) => {
       return res

@@ -1,5 +1,6 @@
 import * as Bluebird    from 'bluebird';
 import { Transaction }  from 'sequelize';
+import { Instance }     from 'sequelize';
 import { database }     from './orm';
 import { Model }        from './orm';
 import { User, Book }   from '../lib';
@@ -30,17 +31,71 @@ export function getUserById(userId: ID): Bluebird<User.Info> {
  * Before doing so, removes and reset some fields to default values
  * (id, score, point, sign-up date), and check for unique username.
  * If there was a problem with the insert, return a promise rejection.
+ * Returns a sanitized version of the inserted user.
  * @param user The user's info to insert.
  * @returns {Bluebird<any>}
  */
-export function addUser(user: User.Info): Bluebird<any> {
+export function addUser(user: User.Info): Bluebird<User.Info> {
   return Bluebird
     .resolve(database.transaction((t: Transaction) => {
       return Model.User
         .create(sanitizeUserForInsert(user), {
           transaction: t
         });
-      }));
+      }))
+    .then((user: User.Info) => {
+      return sanitizeUser(user);
+    });
+}
+
+/**
+ * Increments the points of the given user by n.
+ * Note: the points must NOT be null, or nothing will happen.
+ * Returns a sanitized version of the user BEFORE the update.
+ * @param userId The user to which add points.
+ * @param n The number of points to add.
+ * @returns {Bluebird<User.Info>}
+ */
+export function addPoints(userId: ID, n: number): Bluebird<User.Info> {
+  return Bluebird
+    .resolve(Model.User.findById(userId))
+    .then((user: Instance<typeof Model.User>) => {
+      return database.transaction((t: Transaction) => {
+        return user
+          .increment(['points'], {
+            by: n,
+            transaction: t
+          });
+      });
+    })
+    .then((user: User.Info) => {
+      return sanitizeUser(user);
+    });
+}
+
+/**
+ * Increments the score of the given user by n.
+ * Note: the score must NOT be null, or nothing will happen.
+ * Returns a sanitized version of the user BEFORE the update.
+ * @param userId The user to which increase score.
+ * @param n The number to increase the score by.
+ * @returns {Bluebird<User.Info>}
+ */
+export function addScore(userId: ID, n: number): Bluebird<User.Info> {
+  return Bluebird
+    .resolve(Model.User.findById(userId))
+    .then((user: Instance<typeof Model.User>) => {
+      return database.transaction((t: Transaction) => {
+        return user
+          .increment(['score'], {
+            by: n,
+            transaction: t
+          });
+      });
+    })
+    .then((user: User.Info) => {
+      return sanitizeUser(user);
+    });
 }
 
 /**
