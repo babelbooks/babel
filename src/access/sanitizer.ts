@@ -35,7 +35,10 @@ export function sanitizeUserForInsert(user: User.Info): any {
  * @returns {Book.Raw}
  */
 export function sanitizeBookForInsert(book: Book.Raw): any {
+  let b: any = book;
   // Delete values which can cause a mess and let database handle default values
-  delete book.bookId;
-  return book;
+  delete b.bookId;
+  // Cast the boolean into a number for insert
+  b.available = book.available ? 1 : 0;
+  return b;
 }
