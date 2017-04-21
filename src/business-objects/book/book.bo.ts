@@ -19,8 +19,8 @@ export function getBookById(bookId: ID): Bluebird<Book.Raw> {
  * TODO: use page limit.
  * @returns {Bluebird<Book.Raw[]>}
  */
-export function getAllAvailableBooks(): Bluebird<Book.Raw[]> {
-  return services.getAllAvailableBooks();
+export function getAllAvailableBooks(limit?: number, offset?: number): Bluebird<Book.Raw[]> {
+  return services.getAllAvailableBooks(limit, offset);
 }
 
 /**

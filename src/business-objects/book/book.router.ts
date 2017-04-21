@@ -49,13 +49,20 @@ router.get('/:bookId', (req: express.Request, res: express.Response) => {
  * Gather all books available for borrowing.
  * If no book is available, returns an empty array.
  */
-router.get('/all/available', (req: express.Request, res: express.Response) => {
+router.get('/all/available/:limit?/:offset?', (req: express.Request, res: express.Response) => {
+  let limit   = +req.params['limit'];
+  let offset  = +req.params['offset'];
   return OMBook
-    .getAllAvailableBooks()
+    .getAllAvailableBooks(isNaN(limit) ? undefined : limit, isNaN(offset) ? undefined : offset)
     .then((books: Book.Raw[]) => {
       return res
         .status(200)
         .json(books);
+    })
+    .catch((err: Error) => {
+      return res
+        .status(400)
+        .json(err);
     });
 });
 

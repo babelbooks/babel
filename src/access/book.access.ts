@@ -27,16 +27,19 @@ export function getBookById(bookId: ID): Bluebird<Book.Raw> {
 
 /**
  * Returns the list of all available books
- * in the database.
+ * in the database. The default limit is 10 and
+ * the default offset is 0.
  * If no book is available, returns an empty array.
  * @returns {Bluebird<Book.Raw[]>}
  */
-export function getAllAvailableBooks(): Bluebird<Book.Raw[]> {
+export function getAllAvailableBooks(limit: number = 10, offset: number = 0): Bluebird<Book.Raw[]> {
   return Bluebird.resolve(Model.Book
     .findAll({
       where: {
         available: true
-      }
+      },
+      limit: limit,
+      offset: offset
     }))
     .map((book: Instance<any>) => {
       return book.get({plain: true});
