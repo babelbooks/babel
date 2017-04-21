@@ -1,5 +1,11 @@
 import { ID } from '../shared/id.type';
 
+/**
+ * The base number for our meta ISBNs.
+ * @type {number}
+ */
+export const META_ISBN: number = 9800000000000;  // It's big, but it's OK: javascript support 53 bit integers
+
 export interface Raw {
   /**
    * The book's unique ID.
