@@ -211,8 +211,8 @@ router.put('/add', (req: express.Request, res: express.Response) => {
   }
   return OMUser
     .addUser(req.body.user)
-    .then(() => {
-      return res.status(201);
+    .then((user: User.Info) => {
+      return res.status(201).json(user);
     })
     .catch((err: Error) => {
       return res.status(400).json(err);

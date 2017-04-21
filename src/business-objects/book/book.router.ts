@@ -76,8 +76,8 @@ router.put('/add', (req: express.Request, res: express.Response) => {
   }
   return OMBook
     .addBook(req.body.book)
-    .then(() => {
-      return res.status(201);
+    .then((book: Book.Raw) => {
+      return res.status(201).json(book);
     })
     .catch((err: Error) => {
       return res.status(400).json(err);
