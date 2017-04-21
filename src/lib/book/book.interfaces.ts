@@ -2,9 +2,11 @@ import { ID } from '../shared/id.type';
 
 /**
  * The base number for our meta ISBNs.
+ * It's big, but it's OK:
+ * javascript support 53 bits (52 + sign) integers.
  * @type {number}
  */
-export const META_ISBN: number = 9800000000000;  // It's big, but it's OK: javascript support 53 bit integers
+export const META_ISBN: number = 9800000000000;
 
 export interface Raw {
   /**
