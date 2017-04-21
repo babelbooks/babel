@@ -18,7 +18,7 @@ import { sanitizeUserForInsert }  from './sanitizer';
 export function getUserById(userId: ID): Bluebird<User.Info> {
   return Bluebird.resolve(Model.User
     .findById(userId))
-    .then((user: any) => {
+    .then((user: Instance<any>) => {
       if(!user) {
         return Bluebird.reject(new Error('No User found with ID: ' + userId));
       }
@@ -43,8 +43,8 @@ export function addUser(user: User.Info): Bluebird<User.Info> {
           transaction: t
         });
       }))
-    .then((user: User.Info) => {
-      return sanitizeUser(user);
+    .then((user: Instance<any>) => {
+      return sanitizeUser(user.get({plain: true}));
     });
 }
 
@@ -59,7 +59,7 @@ export function addUser(user: User.Info): Bluebird<User.Info> {
 export function addPoints(userId: ID, n: number): Bluebird<User.Info> {
   return Bluebird
     .resolve(Model.User.findById(userId))
-    .then((user: Instance<typeof Model.User>) => {
+    .then((user: Instance<any>) => {
       return database.transaction((t: Transaction) => {
         return user
           .increment(['points'], {
@@ -68,8 +68,8 @@ export function addPoints(userId: ID, n: number): Bluebird<User.Info> {
           });
       });
     })
-    .then((user: User.Info) => {
-      return sanitizeUser(user);
+    .then((user: Instance<any>) => {
+      return sanitizeUser(user.get({plain: true}));
     });
 }
 
@@ -84,7 +84,7 @@ export function addPoints(userId: ID, n: number): Bluebird<User.Info> {
 export function addScore(userId: ID, n: number): Bluebird<User.Info> {
   return Bluebird
     .resolve(Model.User.findById(userId))
-    .then((user: Instance<typeof Model.User>) => {
+    .then((user: Instance<any>) => {
       return database.transaction((t: Transaction) => {
         return user
           .increment(['score'], {
@@ -93,8 +93,8 @@ export function addScore(userId: ID, n: number): Bluebird<User.Info> {
           });
       });
     })
-    .then((user: User.Info) => {
-      return sanitizeUser(user);
+    .then((user: Instance<any>) => {
+      return sanitizeUser(user.get({plain: true}));
     });
 }
 
