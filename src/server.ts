@@ -5,7 +5,7 @@ import * as cors        from 'cors';
 import * as passport    from 'passport';
 
 import { configPassport }       from './auth/auth.config';
-import { ensureAuthenticated }  from './auth/auth';
+import { ensureAuthenticated }  from './auth/auth.middlewares';
 
 import {default as userRouter}  from './business-objects/user/user.router';
 import {default as bookRouter}  from './business-objects/book/book.router';
