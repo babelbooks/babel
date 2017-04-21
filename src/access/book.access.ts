@@ -1,5 +1,6 @@
 import * as Bluebird    from 'bluebird';
 import { Transaction }  from 'sequelize';
+import { Instance }     from 'sequelize';
 import { Model }        from './orm';
 import { database }     from './orm';
 import { Book }         from '../lib';
@@ -49,15 +50,31 @@ export function getAllAvailableBooks(): Bluebird<Book.Raw[]> {
  * doesn't match any known user, or something similar),
  * returns a promise rejection.
  * @param bookData The basic information about the book to insert.
- * @returns {Bluebird<any>}
+ * @returns {Bluebird<Book.Raw>}
  */
-export function addBook(bookData: Book.Raw): Bluebird<any> {
+export function addBook(bookData: Book.Raw): Bluebird<Book.Raw> {
   return Bluebird.resolve(database.transaction((t: Transaction) => {
     return Model.Book
       .create(sanitizeBookForInsert(bookData), {
         transaction: t
       });
-    }));
+    }))
+    .then((book: Instance<any>) => {
+      console.log(book.get({plain: true}));
+      let b = book.get({plain: true});
+      if(!b.isbn) {
+        // We must add our meta ISBN number to ensure we will be able to
+        // retrieve its metadata later on.
+        return database.transaction((t: Transaction) => {
+          return book.updateAttributes({
+            isbn: b.bookId + Book.META_ISBN
+          }, {
+            transaction: t
+          });
+        });
+      }
+      return b;
+    });
 }
 
 /**
