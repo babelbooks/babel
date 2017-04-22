@@ -1,7 +1,6 @@
 import * as express     from 'express';
 import * as bodyparser  from 'body-parser';
 import * as session     from 'express-session';
-import * as cors        from 'cors';
 import * as passport    from 'passport';
 import * as morgan      from 'morgan';
 
@@ -23,12 +22,6 @@ const app : any = express();
  */
 // Set environment
 app.set('port', process.env.BB_BABEL_PORT || 3000);
-
-// Allow CORS
-app.use(cors({
-  origin: process.env.BB_PRES_URL || '*',
-  optionsSuccessStatus: 200 // Some legacy browsers (IE11, various SmartTVs) choke on 204
-}));
 
 // Parse JSON object in POST/PUT/etc
 app.use(bodyparser.json());
