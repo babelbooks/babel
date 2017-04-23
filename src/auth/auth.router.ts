@@ -4,7 +4,7 @@ import { Request }      from 'express';
 import { Response }     from 'express';
 import { NextFunction } from 'express';
 
-let router: Router = Router();
+export let router: Router = Router();
 
 /**
  * POST /login
@@ -44,5 +44,3 @@ router.post('/logout', (req: Request, res: Response) => {
     loggedOut: true
   });
 });
-
-export default router;

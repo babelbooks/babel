@@ -10,7 +10,7 @@ import { skipFor }              from './auth/auth.middlewares';
 
 import * as user  from './business-objects/user/user.router';
 import * as book  from './business-objects/book/book.router';
-import {default as authRouter}  from './auth/auth.router';
+import * as auth  from './auth/auth.router';
 
 /**
  * Create server app.
@@ -59,7 +59,7 @@ app.get('/test', (req: any, res: any) => res.status(200).json({
 }));
 
 // Mount sub routers
-app.use('/auth', authRouter);
+app.use('/auth', auth.router);
 app.use('/user', skipFor(ensureAuthenticated, user.noNeedToCheck), user.router);
 app.use('/book', skipFor(ensureAuthenticated, book.noNeedToCheck), book.router);
 
