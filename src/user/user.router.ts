@@ -1,7 +1,7 @@
 import * as express   from 'express';
 import * as OMUser    from './user.bo';
-import { User }       from '../../lib';
-import { Authorized } from '../../auth/auth.middlewares';
+import { User }       from '../lib';
+import { Authorized } from '../auth/auth.middlewares';
 
 /**
  * The router associated to users.

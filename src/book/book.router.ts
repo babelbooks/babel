@@ -1,7 +1,7 @@
 import * as express   from 'express';
 import * as OMBook    from './book.bo';
-import { Book }       from '../../lib';
-import { Authorized } from '../../auth/auth.middlewares';
+import { Book }       from '../lib';
+import { Authorized } from '../auth/auth.middlewares';
 
 /**
  * The router associated to books.
@@ -114,7 +114,8 @@ router.post('/read', (req: express.Request, res: express.Response) => {
 });
 
 /**
- *
+ * The paths this router consider as free to query
+ * without any authentication.
  * @type {[Authorized]}
  */
 export const noNeedToCheck: Authorized[] = [

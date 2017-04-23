@@ -1,12 +1,12 @@
 import * as Bluebird    from 'bluebird';
 import { Transaction }  from 'sequelize';
 import { Instance }     from 'sequelize';
-import { database }     from './orm';
-import { Model }        from './orm';
+import { database }     from '../utils/orm';
+import { Model }        from '../utils/orm';
 import { User, Book }   from '../lib';
 import { ID }           from '../lib';
-import { sanitizeUser }           from './sanitizer';
-import { sanitizeUserForInsert }  from './sanitizer';
+import { sanitizeUser }           from '../utils/sanitizer';
+import { sanitizeUserForInsert }  from '../utils/sanitizer';
 
 /**
  * Returns sanitized user's information directly from database.

@@ -8,8 +8,8 @@ import { configPassport }       from './auth/auth.config';
 import { ensureAuthenticated }  from './auth/auth.middlewares';
 import { skipFor }              from './auth/auth.middlewares';
 
-import * as user  from './business-objects/user/user.router';
-import * as book  from './business-objects/book/book.router';
+import * as user  from './user/user.router';
+import * as book  from './book/book.router';
 import * as auth  from './auth/auth.router';
 
 /**

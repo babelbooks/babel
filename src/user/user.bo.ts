@@ -1,7 +1,7 @@
 import * as Bluebird  from 'bluebird';
-import * as services  from '../../access/user.access';
-import { User, Book } from '../../lib';
-import { ID }         from '../../lib';
+import * as services  from './user.access';
+import { User, Book } from '../lib';
+import { ID }         from '../lib';
 
 /**
  * Gather the list of all books originally owned by the given user

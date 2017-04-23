@@ -1,7 +1,7 @@
 import * as Crypto        from 'crypto';
 import { PassportStatic } from 'passport';
 import { Strategy }       from 'passport-local';
-import { Model }          from '../access/orm';
+import { Model }          from '../utils/orm';
 
 /**
  * Configure the given passport object to use

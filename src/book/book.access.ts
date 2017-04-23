@@ -1,11 +1,11 @@
 import * as Bluebird    from 'bluebird';
 import { Transaction }  from 'sequelize';
 import { Instance }     from 'sequelize';
-import { Model }        from './orm';
-import { database }     from './orm';
+import { Model }        from '../utils/orm';
+import { database }     from '../utils/orm';
 import { Book }         from '../lib';
 import { ID }           from '../lib';
-import { sanitizeBookForInsert }  from './sanitizer';
+import { sanitizeBookForInsert }  from '../utils/sanitizer';
 
 /**
  * Returns the raw book identified by the given ID.

@@ -1,6 +1,6 @@
 import * as Bluebird  from 'bluebird';
-import * as services  from '../../access/book.access';
-import { Book, ID }   from '../../lib';
+import * as services  from './book.access';
+import { Book, ID }   from '../lib';
 
 /**
  * Returns all information known about the given book,
