@@ -49,7 +49,6 @@ router.get('/me', (req: express.Request, res: express.Response) => {
     });
 });
 
-
 /**
  * GET /other/:userId
  *
