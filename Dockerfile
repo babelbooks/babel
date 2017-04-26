@@ -14,8 +14,9 @@ COPY . /usr/src/babel
 EXPOSE 3000
 
 # Install needed dependencies
-RUN npm install -g gulp-cli
-RUN npm install
+RUN npm install -g gulp-cli --no-progress --silent
+RUN npm install -g pm2 --no-progress --silent
+RUN npm install --no-progress --silent
 
 # Run it
 CMD [ "npm", "start" ]
