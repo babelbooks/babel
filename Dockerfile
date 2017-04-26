@@ -19,6 +19,6 @@ RUN npm install -g pm2 --no-progress --silent
 RUN npm install --no-progress --silent
 
 # Run it
-CMD [ "npm", "start" ]
+CMD npm run prod
 
 
