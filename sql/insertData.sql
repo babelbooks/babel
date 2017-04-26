@@ -4,10 +4,10 @@ START TRANSACTION;
 SET time_zone = "+00:00";
 
 --
--- Database: `BabelDB`
+-- Database: ``BabelDB``
 --
 
-Use BabelDB;
+Use `BabelDB`;
 
 --
 -- Dumping data for table `User`
