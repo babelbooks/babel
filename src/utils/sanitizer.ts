@@ -1,5 +1,6 @@
-import { User } from '../lib';
-import { Book } from '../lib';
+import { User }     from '../lib';
+import { Book }     from '../lib';
+import * as crypto  from 'crypto';
 
 /**
  * Ensures that the given user object
@@ -25,6 +26,10 @@ export function sanitizeUserForInsert(user: User.Info): any {
   delete user.signUpDate;
   delete user.points;
   delete user.score;
+  // Crypt password
+  let hash = crypto.createHash('sha512');
+  hash.update(user.password);
+  user.password = '0x' + hash.digest('hex');
   return user;
 }
 
