@@ -11,6 +11,7 @@ services:
     environment:
       - BB_DB_HOST=babeldb
       - BB_DB_PORT=3306
+      - BB_DB_NAME=BabelDB
       - BB_DB_MAXPOOL=10
       - BB_DB_MINPOOL=1
       - BB_DB_IDLE=10000

@@ -43,7 +43,12 @@ options.define = {
 /**
  * The object representing our database.
  */
-export let database = new Sequelize('BabelDB', process.env.BB_DB_USER || 'borges', process.env.BB_DB_PASSWORD || 'devonly', options);
+export let database = new Sequelize(
+  process.env.BB_DB_NAME || 'BabelDB',
+  process.env.BB_DB_USER || 'borges',
+  process.env.BB_DB_PASSWORD || 'devonly',
+  options
+);
 
 /**
  * The domain's model that will be used to manipulate
