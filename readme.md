@@ -177,10 +177,11 @@ the created user as body.
 The provided book must have the following shape:
 ```json
 {
-  "origin" : ID,
-  "isbn": ID | null,
-  "available": boolean
-  
+  "book": {
+    "origin" : ID,
+    "isbn": ID | null,
+    "available": boolean
+  }
 }
 ```
 
