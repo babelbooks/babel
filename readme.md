@@ -135,14 +135,15 @@ The provided user must have the following shape:
 ```json
 {
   "user" : {
-    "username": string,
+    "username": ID,
+    "password": string,
     "lastName": string,
     "firstName": string
   }
 }
 ```
 Other meaningful fields will be erased.
-Other fields will cause an error.
+Other fields or missing fields will cause an error.
 
 If successful, the result will be a `201 Created` header with
 the created user as body.
