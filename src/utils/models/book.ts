@@ -25,6 +25,6 @@ module.exports = function(sequelize: any, DataTypes: any) {
       allowNull: false
     }
   }, {
-    tableName: 'book'
+    tableName: 'Book'
   });
 };

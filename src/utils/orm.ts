@@ -6,10 +6,10 @@ import * as Sequelize from 'sequelize';
 let options: Sequelize.Options;
 
 // Set different options depending of the environment (prod or dev)
-if(process.env.NODE_ENV == 'production') {
+if(process.env.NODE_ENV == 'prod') {
   // Prod options
   options = {
-    host: 'localhost',
+    host: process.env.BB_DB_HOST,
     port: process.env.BB_DB_PORT,
     dialect: 'mysql',
     pool: {
