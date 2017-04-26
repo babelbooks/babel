@@ -15,9 +15,11 @@ USE `BabelDB`;
 --
 -- User: the one thanks to whom our app will access `babeldb`
 --
-DROP USER IF EXISTS `borges`@`localhost`;
-CREATE USER `borges`@`localhost` IDENTIFIED BY 'devonly';
+DROP USER IF EXISTS `borges`@`%`;
+CREATE USER `borges`@`%` IDENTIFIED BY 'devonly';
 GRANT INSERT, SELECT, UPDATE ON `BabelDB`.* TO `borges`@`%`;
+
+FLUSH PRIVILEGES;
 
 -- --------------------------------------------------------
 
