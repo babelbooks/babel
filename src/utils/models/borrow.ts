@@ -20,20 +20,20 @@ module.exports = function(sequelize: any, DataTypes: any) {
       type: DataTypes.STRING(255),
       allowNull: false,
       references: {
-        model: 'user',
+        model: 'User',
         key: 'username'
       }
     },
     beginDate: {
       type: DataTypes.TIME,
       allowNull: false,
-      defaultValue: 'sequelize.literal(\'CURRENT_TIMESTAMP\')'
+      defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
     },
     dateOfReturn: {
       type: DataTypes.TIME,
       allowNull: true
     }
   }, {
-    tableName: 'borrow'
+    tableName: 'Borrow'
   });
 };

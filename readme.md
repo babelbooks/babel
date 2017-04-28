@@ -16,6 +16,12 @@ Only build:
 gulp build
 ```
 
+## Deploy
+```shell
+docker-compose up --build
+```
+And it will run the server + the database.
+
 ## Services
 ### Auth
 #### POST /auth/login

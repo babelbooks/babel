@@ -44,6 +44,7 @@ export function configPassport(passport: PassportStatic): void {
       })
       .catch((err: Error) => {
         console.error('ERROR: Unable to execute query correctly');
+        console.error(err);
         return done(null, false, {
           message: err
         });

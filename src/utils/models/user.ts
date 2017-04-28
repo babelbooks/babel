@@ -22,12 +22,12 @@ module.exports = function(sequelize: any, DataTypes: any) {
     points: {
       type: DataTypes.INTEGER(11),
       allowNull: true,
-      defaultValue: '2'
+      defaultValue: 2
     },
     score: {
       type: DataTypes.BIGINT,
       allowNull: true,
-      defaultValue: '0'
+      defaultValue: 0
     },
     signUpDate: {
       type: DataTypes.TIME,
@@ -35,6 +35,6 @@ module.exports = function(sequelize: any, DataTypes: any) {
       defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
     }
   }, {
-    tableName: 'user'
+    tableName: 'User'
   });
 };

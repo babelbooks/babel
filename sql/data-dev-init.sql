@@ -15,9 +15,11 @@ USE `BabelDB`;
 --
 -- User: the one thanks to whom our app will access `babeldb`
 --
-DROP USER IF EXISTS `borges`@`localhost`;
-CREATE USER `borges`@`localhost` IDENTIFIED BY 'devonly';
+DROP USER IF EXISTS `borges`@`%`;
+CREATE USER `borges`@`%` IDENTIFIED BY 'devonly';
 GRANT INSERT, SELECT, UPDATE ON `BabelDB`.* TO `borges`@`%`;
+
+FLUSH PRIVILEGES;
 
 -- --------------------------------------------------------
 
@@ -124,18 +126,18 @@ CREATE FUNCTION newBorrowing
 ) RETURNS BOOLEAN
 BEGIN
 
-	IF( (select available FROM Book WHERE bookId = myBookId)) then 
-    	UPDATE Book SET Book.available = FALSE
-		WHERE Book.bookId = myBookId;
-		
-		UPDATE Borrow SET Borrow.dateOfReturn = Now()
-		WHERE Borrow.bookId = myBookId && Borrow.dateOfReturn IS NULL;
+    IF( (select available FROM Book WHERE bookId = myBookId)) then 
+        UPDATE Book SET Book.available = FALSE
+        WHERE Book.bookId = myBookId;
+        
+        UPDATE Borrow SET Borrow.dateOfReturn = Now()
+        WHERE Borrow.bookId = myBookId && Borrow.dateOfReturn IS NULL;
 
-		INSERT INTO Borrow(borrowId, bookId, userId, beginDate, dateOfReturn) VALUES (NULL, myBookId, myUserId, Now(), NULL);
+        INSERT INTO Borrow(borrowId, bookId, userId, beginDate, dateOfReturn) VALUES (NULL, myBookId, myUserId, Now(), NULL);
 
-		RETURN TRUE;
-	ELSE
-		RETURN FALSE;
+        RETURN TRUE;
+    ELSE
+        RETURN FALSE;
     END IF;
 
 END $$

@@ -11,6 +11,11 @@ import { skipFor }              from './auth/auth.middlewares';
 import * as user  from './user/user.router';
 import * as book  from './book/book.router';
 import * as auth  from './auth/auth.router';
+import * as debug from './debug.docker';
+
+import 'colors';
+
+debug.run();
 
 /**
  * Create server app.
@@ -67,5 +72,5 @@ app.use('/book', skipFor(ensureAuthenticated, book.noNeedToCheck), book.router);
  * Run the server.
  */
 app.listen(app.get('port'), () => {
-  console.log('Server running on port ' + app.get('port'));
+  console.log('INFO'.cyan + ' Server running on port ' + String(app.get('port')).cyan);
 });

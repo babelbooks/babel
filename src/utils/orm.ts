@@ -6,10 +6,10 @@ import * as Sequelize from 'sequelize';
 let options: Sequelize.Options;
 
 // Set different options depending of the environment (prod or dev)
-if(process.env.NODE_ENV == 'production') {
+if(process.env.NODE_ENV == 'prod') {
   // Prod options
   options = {
-    host: 'localhost',
+    host: process.env.BB_DB_HOST,
     port: process.env.BB_DB_PORT,
     dialect: 'mysql',
     pool: {
@@ -43,7 +43,12 @@ options.define = {
 /**
  * The object representing our database.
  */
-export let database = new Sequelize('BabelDB', process.env.BB_DB_USER || 'borges', process.env.BB_DB_PASSWORD || 'devonly', options);
+export let database = new Sequelize(
+  process.env.BB_DB_NAME || 'BabelDB',
+  process.env.BB_DB_USER || 'borges',
+  process.env.BB_DB_PASSWORD || 'devonly',
+  options
+);
 
 /**
  * The domain's model that will be used to manipulate
