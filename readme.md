@@ -160,7 +160,7 @@ the created user as body.
 }
 ```
 
-#### GET /all/available/:limit?/:offset?
+#### GET book/all/available/:limit?/:offset?
 **Protected**.
 ```json
 [{
