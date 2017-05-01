@@ -171,14 +171,14 @@ INSERT INTO `User` (`username`, `password`, `signUpDate`, `lastName`, `firstName
 --
 
 INSERT INTO `Book` (`bookId`, `origin`, `available`) VALUES
-(1, 'Ceyb', TRUE),
-(2, 'Ceyb', TRUE),
-(3, 'Ceyb', TRUE),
-(4, 'Le Poney', FALSE),
-(5, 'Le Poney', TRUE),
-(6, 'tabernac', FALSE),
-(7, 'tabernac', FALSE),
-(8, 'tabernac', TRUE);
+(1, 2266182692, 'Ceyb', TRUE),
+(2, 2266182706, 'Ceyb', TRUE),
+(3, 2266182714, 'Ceyb', TRUE),
+(4, 2070360024, 'Le Poney', FALSE),
+(5, 2253001279, 'Le Poney', TRUE),
+(6, 0547928211, 'tabernac', FALSE),
+(7, 0590353403, 'tabernac', FALSE),
+(8, 0316015849, 'tabernac', TRUE);
 
 --
 -- Dumping data for table `Borrow`
