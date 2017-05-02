@@ -1,5 +1,5 @@
-import { ID }     from '..';
-import { Borrow } from '..';
+import { ID }   from '..';
+import { Book } from '..';
 
 export interface Full {
   /**
@@ -10,7 +10,7 @@ export interface Full {
   /**
    * The borrow object associated to the meeting.
    */
-  borrow: Borrow.Raw;
+  borrow: Book.Borrowing;
 
   /**
    * The ID of the user currently owning the
