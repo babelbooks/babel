@@ -42,3 +42,14 @@ export function addBook(book: Book.Raw): Bluebird<any> {
 export function setBookRead(bookId: ID): Bluebird<any> {
   return services.setBookRead(bookId);
 }
+
+/**
+ * Returns the raw borrowing identified by the given ID.
+ * If no Borrow exists with such an ID,
+ * returns a promise rejection.
+ * @param borrowId The book's ID.
+ * @returns {Bluebird<Book.Borrowing>}
+ */
+export function getBorrowing(borrowId: ID): Bluebird<Book.Borrowing> {
+  return services.getBorrowById(borrowId);
+}

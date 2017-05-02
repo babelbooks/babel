@@ -1,6 +1,7 @@
-import { User }     from '../lib';
-import { Book }     from '../lib';
-import * as crypto  from 'crypto';
+import { User }         from '../lib';
+import { Book }         from '../lib';
+import { Appointment }  from '../lib';
+import * as crypto      from 'crypto';
 
 /**
  * Ensures that the given user object
@@ -46,4 +47,28 @@ export function sanitizeBookForInsert(book: Book.Raw): any {
   // Cast the boolean into a number for insert
   b.available = book.available ? 1 : 0;
   return b;
+}
+
+/**
+ * Ensures that the given appointment object
+ * can be safely inserted in the database.
+ * @param meeting The appointment to sanitize.
+ * @returns {any}
+ */
+export function sanitizeAppointmentForInsert(meeting: Appointment.Raw): any {
+  // Delete values which can cause a mess and let database handle default values
+  delete meeting.appointmentId;
+  return meeting;
+}
+
+/**
+ * Ensures that the given location object
+ * can be safely inserted in the database.
+ * @param loc The location to sanitize.
+ * @returns {any}
+ */
+export function sanitizeLocationForInsert(loc: Appointment.Location): any {
+  // Delete values which can cause a mess and let database handle default values
+  delete loc.depositLocationId;
+  return loc;
 }
