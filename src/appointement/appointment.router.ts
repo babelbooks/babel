@@ -49,6 +49,28 @@ router.get('/:appointmentId', (req: express.Request, res: express.Response) => {
 });
 
 /**
+ * GET /location/:locationId
+ *
+ * Returns an Appointment.Location object as json if the request was correct.
+ * Returns a 400 BAD REQUEST along with a json object describing
+ * the error if there was an error.
+ */
+router.get('/location/:locationId', (req: express.Request, res: express.Response) => {
+  return OMApps
+    .getLocationById(req.params['locationId'])
+    .then((loc: Appointment.Location) => {
+      return res
+        .status(200)
+        .json(loc);
+    })
+    .catch((err: Error) => {
+      return res
+        .status(400)
+        .json(err);
+    });
+});
+
+/**
  * GET /user/:userId/for
  *
  * Returns an array of Appointment.Full objects as json if the request was correct.
@@ -89,6 +111,31 @@ router.get('/user/:userId/with', (req: express.Request, res: express.Response) =
       return res
         .status(400)
         .json(err);
+    });
+});
+
+/**
+ * PUT /add
+ * meeting: Appointment.Full
+ *
+ * Tries to create an appointment from the given object,
+ * and returns a 201 CREATED status if successful.
+ * Otherwise, returns a 400 BAD REQUEST along with a json object
+ * describing the error.
+ */
+router.put('/add', (req: express.Request, res: express.Response) => {
+  if(!req.body.meeting) {
+    return res.status(400).json(new Error(
+      'Missing "meeting" parameter in request body.'
+    ));
+  }
+  return OMApps
+    .addAppointment(req.body.meeting)
+    .then((app: Appointment.Raw) => {
+      return res.status(201).json(app);
+    })
+    .catch((err: Error) => {
+      return res.status(400).json(err);
     });
 });
 
