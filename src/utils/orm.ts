@@ -61,8 +61,8 @@ export namespace Model {
   export let User = database.import('./models/user');
   export let Book = database.import('./models/book');
   export let Borrow = database.import('./models/borrow');
-  export let Appointment = database.import('./model/appointment');
-  export let Location = database.import('./model/deposit-location');
+  export let Appointment = database.import('./models/appointment');
+  export let Location = database.import('./models/deposit-location');
 
   // Then complete its associations
   // Borrow has book and user associations (1:n)
