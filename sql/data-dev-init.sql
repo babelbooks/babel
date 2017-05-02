@@ -181,8 +181,8 @@ ALTER TABLE `depositlocation`
 -- Constraints for table `appointment`
 --
 ALTER TABLE `appointment`
-  ADD CONSTRAINT `appointment_ibfk_1` FOREIGN KEY (`currentOwnerId`) REFERENCES `user` (`username`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `appointment_ibfk_2` FOREIGN KEY (`borrowId`) REFERENCES `borrow` (`borrowId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `appointment_ibfk_1` FOREIGN KEY (`currentOwnerId`) REFERENCES `User` (`username`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `appointment_ibfk_2` FOREIGN KEY (`borrowId`) REFERENCES `Borrow` (`borrowId`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `appointment_ibfk_3` FOREIGN KEY (`depositLocationId`) REFERENCES `depositlocation` (`depositLocationId`) ON DELETE CASCADE ON UPDATE CASCADE;
   
 DELIMITER $$
@@ -257,5 +257,22 @@ INSERT INTO `Borrow` (`borrowId`, `bookId`, `userId`, `beginDate`, `dateOfReturn
 (3, 6, 'Ceyb', '2017-04-06 07:40:52', NULL),
 (4, 7, 'Ceyb', '2017-04-12 18:34:23', NULL);
 
+--
+-- Dumping data for table depositlocation
+--
+
+INSERT INTO depositlocation (depositLocationId, depositLocationType, depositLocationAddress) VALUES
+(1, 'DOMICILE', '12, avenue jean jaurès\r\n69100 Villeurbanne'),
+(2, 'CAFE', '30 bourg Confluence,\r\n69004 Lyon'),
+(3, 'PARC', 'Arbre au nord de la rivière,\r\nFeysine');
+
+--
+-- Dumping data for table appointment
+--
+
+INSERT INTO appointment (appointmentId, currentOwnerId, borrowId, depositLocationId) VALUES
+(1, 'Le Poney', 2, 1),
+(2, 'tabernac', 3, 2),
+(3, 'Le Poney', 4, 3);
 
 COMMIT;
