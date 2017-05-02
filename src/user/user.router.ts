@@ -194,6 +194,28 @@ router.post('/me/points', (req: express.Request, res: express.Response) => {
 });
 
 /**
+ * POST /me/borrow/:bookId
+ *
+ * Borrows the given book for the current user.
+ * Otherwise, returns a 400 bad request status code along with an object
+ * describing the error.
+ */
+router.post('/me/borrow/:bookId', (req: express.Request, res: express.Response) => {
+  return OMUser
+    .borrowBook(req.session.passport.user.username, req.params['bookId'])
+    .then((resp: any) => {
+      return res
+        .status(200)
+        .json(resp);
+    })
+    .catch((err: Error) => {
+      return res
+        .status(400)
+        .json(err);
+    });
+});
+
+/**
  * PUT /add
  * user: User.Info
  *

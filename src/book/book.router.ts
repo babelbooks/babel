@@ -44,6 +44,23 @@ router.get('/:bookId', (req: express.Request, res: express.Response) => {
 });
 
 /**
+ * GET /borrow/:borrowId
+ *
+ * Returns an Book.Borrowing object as json if the request was correct.
+ * Returns a 400 BAD REQUEST along with a json object describing
+ * the error if there was an error.
+ */
+router.get('/borrow/:borrowId', (req: express.Request, res: express.Response) => {
+  return OMBook
+    .getBorrowing(req.params['borrowId'])
+    .then((borrow: Book.Borrowing) => {
+      return res
+        .status(200)
+        .json(borrow);
+    });
+});
+
+/**
  * GET all/available
  *
  * Gather all books available for borrowing.
