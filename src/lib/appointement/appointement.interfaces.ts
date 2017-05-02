@@ -1,4 +1,28 @@
-import { ID } from '../shared/id.type';
+import { ID }     from '..';
+import { Borrow } from '..';
+
+export interface Full {
+  /**
+   * The appointment's unique ID.
+   */
+  appointmentId: ID;
+
+  /**
+   * The borrow object associated to the meeting.
+   */
+  borrow: Borrow.Raw;
+
+  /**
+   * The ID of the user currently owning the
+   * book associated to the appointment.
+   */
+  currentOwnerId: ID;
+
+  /**
+   * The associated meeting point.
+   */
+  depositLocation: Location;
+}
 
 export interface Raw {
   /**
