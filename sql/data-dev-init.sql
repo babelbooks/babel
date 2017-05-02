@@ -29,7 +29,7 @@ FLUSH PRIVILEGES;
 
 CREATE TABLE `Book` (
   `bookId` bigint(20) NOT NULL,
-  `isbn` bigint(20) DEFAULT NULL,
+  `isbn` varchar(20) DEFAULT NULL,
   `origin` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'Original owner',
   `available` boolean NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -118,6 +118,73 @@ ALTER TABLE `Borrow`
   ADD CONSTRAINT `Borrow_ibfk_1` FOREIGN KEY (`bookId`) REFERENCES `Book` (`bookId`) ON DELETE NO ACTION ON UPDATE CASCADE,
   ADD CONSTRAINT `Borrow_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `User` (`username`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
+-- --------------------------------------------------------
+
+-- Create apppoiment & depositLocations
+DROP TABLE IF EXISTS `appointment`;
+CREATE TABLE `appointment` (
+  `appointmentId` bigint(20) NOT NULL,
+  `currentOwnerId` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `borrowId` bigint(20) NOT NULL,
+  `depositLocationId` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for table `appointment`
+--
+ALTER TABLE `appointment`
+  ADD PRIMARY KEY (`appointmentId`),
+  ADD KEY `currentOwnerId` (`currentOwnerId`),
+  ADD KEY `borrowId` (`borrowId`),
+  ADD KEY `depositLocationId` (`depositLocationId`);
+
+--
+-- AUTO_INCREMENT for table `appointment`
+--
+ALTER TABLE `appointment`
+  MODIFY `appointmentId` bigint(20) NOT NULL AUTO_INCREMENT;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `depositlocation`
+--
+
+DROP TABLE IF EXISTS `depositlocation`;
+CREATE TABLE `depositlocation` (
+  `depositLocationId` bigint(20) NOT NULL,
+  `depositLocationType` varchar(20) NOT NULL,
+  `depositLocationAddress` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `depositlocation`
+--
+ALTER TABLE `depositlocation`
+  ADD PRIMARY KEY (`depositLocationId`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `depositlocation`
+--
+ALTER TABLE `depositlocation`
+  MODIFY `depositLocationId` bigint(20) NOT NULL AUTO_INCREMENT;
+
+  --
+-- Constraints for table `appointment`
+--
+ALTER TABLE `appointment`
+  ADD CONSTRAINT `appointment_ibfk_1` FOREIGN KEY (`currentOwnerId`) REFERENCES `user` (`username`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `appointment_ibfk_2` FOREIGN KEY (`borrowId`) REFERENCES `borrow` (`borrowId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `appointment_ibfk_3` FOREIGN KEY (`depositLocationId`) REFERENCES `depositlocation` (`depositLocationId`) ON DELETE CASCADE ON UPDATE CASCADE;
+  
 DELIMITER $$
 
 CREATE FUNCTION newBorrowing
@@ -170,15 +237,15 @@ INSERT INTO `User` (`username`, `password`, `signUpDate`, `lastName`, `firstName
 -- Dumping data for table `Book`
 --
 
-INSERT INTO `Book` (`bookId`, `origin`, `available`) VALUES
-(1, 'Ceyb', TRUE),
-(2, 'Ceyb', TRUE),
-(3, 'Ceyb', TRUE),
-(4, 'Le Poney', FALSE),
-(5, 'Le Poney', TRUE),
-(6, 'tabernac', FALSE),
-(7, 'tabernac', FALSE),
-(8, 'tabernac', TRUE);
+INSERT INTO `Book` (`bookId`, `isbn`, `origin`, `available`) VALUES
+(1, '2266182692', 'Ceyb', TRUE),
+(2, '2266182706', 'Ceyb', TRUE),
+(3, '2266182714', 'Ceyb', TRUE),
+(4, '2070360024', 'Le Poney', FALSE),
+(5, '2253001279', 'Le Poney', TRUE),
+(6, '0547928211', 'tabernac', FALSE),
+(7, '0590353403', 'tabernac', FALSE),
+(8, '0316015849', 'tabernac', TRUE);
 
 --
 -- Dumping data for table `Borrow`
