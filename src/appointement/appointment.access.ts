@@ -1,6 +1,7 @@
 import * as Bluebird    from 'bluebird';
-import { Model }        from '../utils/orm';
-import { database }     from '../utils/orm';
+import { Transaction }  from 'sequelize';
+import { Instance }     from 'sequelize';
+import {database, Model}        from '../utils/orm';
 import { Appointment }  from '../lib';
 import { ID }           from '../lib';
 
@@ -12,7 +13,14 @@ import { ID }           from '../lib';
  * @returns {Bluebird<Appointment.Raw>}
  */
 export function getAppointmentById(id: ID): Bluebird<Appointment.Raw> {
-  return Bluebird.reject(new Error('Not implemented yet!'));
+  return Bluebird.resolve(Model.Appointment
+    .findById(id))
+    .then((app: Instance<any>) => {
+      if(!app) {
+        return Bluebird.reject(new Error('No Appointment found with the ID: ' + id));
+      }
+      return app.get({plain: true});
+    });
 }
 
 /**
@@ -22,7 +30,23 @@ export function getAppointmentById(id: ID): Bluebird<Appointment.Raw> {
  * @returns {Bluebird<Appointment.Full[]>}
  */
 export function getAppointmentsForUser(userId: ID): Bluebird<Appointment.Full[]> {
-  return Bluebird.reject(new Error('Not implemented yet!'));
+  return Bluebird.resolve(Model.Appointment
+    .findAll({
+      where: {
+        currentOwnerId: userId
+      },
+      include: [
+        {
+          model: Model.Borrow
+        },
+        {
+          model: Model.Location
+        }
+      ]
+    }))
+    .map((res: any) => {
+      return res.get({plain: true}).appointment;
+    });
 }
 
 /**
@@ -32,7 +56,23 @@ export function getAppointmentsForUser(userId: ID): Bluebird<Appointment.Full[]>
  * @returns {Bluebird<Appointment.Full[]>}
  */
 export function getAppointmentsWithUser(userId: ID): Bluebird<Appointment.Full[]> {
-  return Bluebird.reject(new Error('Not implemented yet!'));
+  return Bluebird.resolve(Model.Appointment
+    .findAll({
+      include: [
+        {
+          model: Model.Borrow,
+          where: {
+            userId: userId
+          }
+        },
+        {
+          model: Model.Location
+        }
+      ]
+    }))
+    .map((res: any) => {
+      return res.get({plain: true}).appointment;
+    });
 }
 
 /**
@@ -40,8 +80,22 @@ export function getAppointmentsWithUser(userId: ID): Bluebird<Appointment.Full[]
  * from the database.
  * Returns a promise rejection upon failure.
  * @param id The id of the appointment to delete.
- * @returns {Bluebird<any>}
+ * @returns {Bluebird<void>}
  */
-export function removeAppointmentById(id: ID): Bluebird<any> {
-  return Bluebird.reject(new Error('Not implemented yet!'));
+export function removeAppointmentById(id: ID): Bluebird<void> {
+  return Bluebird.resolve(
+    database.transaction((t: Transaction) => {
+      return Model.Appointment
+        .destroy({
+          where: {
+            appointmentId: id
+          },
+          transaction: t
+        });
+    }))
+    .then((value: number) => {
+      if(value !== 1) {
+        return Bluebird.reject(new Error('No Appointment found with the ID: ' + id));
+      }
+    });
 }
