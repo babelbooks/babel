@@ -61,6 +61,8 @@ export namespace Model {
   export let User = database.import('./models/user');
   export let Book = database.import('./models/book');
   export let Borrow = database.import('./models/borrow');
+  export let Appointment = database.import('./model/appointment');
+  export let Location = database.import('./model/deposit-location');
 
   // Then complete its associations
   // Borrow has book and user associations (1:n)
@@ -72,5 +74,13 @@ export namespace Model {
   // Book has user (original owner) (1:n)
   Book.belongsTo(User, {foreignKey: 'origin'});
   User.hasMany(Book, {foreignKey: 'origin'});
+
+  // Appointment has user (1:n), borrow (1:n) and location (1:n) associations
+  Appointment.belongsTo(User, {foreignKey: 'currentOwnerId'});
+  Appointment.belongsTo(Borrow, {foreignKey: 'borrowId'});
+  Appointment.belongsTo(Location, {foreignKey: 'depositLocationId'});
+  User.hasMany(Appointment, {foreignKey: 'currentOwnerId'});
+  Borrow.hasMany(Appointment, {foreignKey: 'borrowId'});
+  Location.hasMany(Appointment, {foreignKey: 'depositLocationId'});
 }
 
