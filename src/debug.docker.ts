@@ -2,11 +2,11 @@ import * as mysql   from 'mysql';
 import 'colors';
 
 let co = mysql.createConnection({
-  host     : process.env.BB_DB_HOST,
-  port     : process.env.BB_DB_PORT,
-  user     : 'borges',
-  password : 'devonly',
-  database : process.env.BB_DB_NAME,
+  host     : process.env.BB_DB_HOST || 'localhost',
+  port     : process.env.BB_DB_PORT || 3306,
+  user     : process.env.BB_DB_USER || 'borges',
+  password : process.env.BB_DB_PASS || 'devonly',
+  database : process.env.BB_DB_NAME || 'babeldb',
 });
 
 export function run() {
