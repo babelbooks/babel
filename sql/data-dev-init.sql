@@ -29,7 +29,7 @@ FLUSH PRIVILEGES;
 
 CREATE TABLE `Book` (
   `bookId` bigint(20) NOT NULL,
-  `isbn` bigint(20) DEFAULT NULL,
+  `isbn` varchar(20) DEFAULT NULL,
   `origin` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT 'Original owner',
   `available` boolean NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -170,15 +170,15 @@ INSERT INTO `User` (`username`, `password`, `signUpDate`, `lastName`, `firstName
 -- Dumping data for table `Book`
 --
 
-INSERT INTO `Book` (`bookId`, `origin`, `available`) VALUES
-(1, 2266182692, 'Ceyb', TRUE),
-(2, 2266182706, 'Ceyb', TRUE),
-(3, 2266182714, 'Ceyb', TRUE),
-(4, 2070360024, 'Le Poney', FALSE),
-(5, 2253001279, 'Le Poney', TRUE),
-(6, 0547928211, 'tabernac', FALSE),
-(7, 0590353403, 'tabernac', FALSE),
-(8, 0316015849, 'tabernac', TRUE);
+INSERT INTO `Book` (`bookId`, `isbn`, `origin`, `available`) VALUES
+(1, '2266182692', 'Ceyb', TRUE),
+(2, '2266182706', 'Ceyb', TRUE),
+(3, '2266182714', 'Ceyb', TRUE),
+(4, '2070360024', 'Le Poney', FALSE),
+(5, '2253001279', 'Le Poney', TRUE),
+(6, '0547928211', 'tabernac', FALSE),
+(7, '0590353403', 'tabernac', FALSE),
+(8, '0316015849', 'tabernac', TRUE);
 
 --
 -- Dumping data for table `Borrow`
