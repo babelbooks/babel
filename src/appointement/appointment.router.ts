@@ -71,15 +71,15 @@ router.get('/location/:locationId', (req: express.Request, res: express.Response
 });
 
 /**
- * GET /user/:userId/for
+ * GET /user/me/for
  *
  * Returns an array of Appointment.Full objects as json if the request was correct.
  * Returns a 400 BAD REQUEST along with a json object describing
  * the error if there was an error.
  */
-router.get('/user/:userId/for', (req: express.Request, res: express.Response) => {
+router.get('/user/me/for', (req: express.Request, res: express.Response) => {
   return OMApps
-    .getAppointmentsForUser(req.params['userId'])
+    .getAppointmentsForUser(req.session.passport.user.username)
     .then((appointments: Appointment.Full[]) => {
       return res
         .status(200)
@@ -93,15 +93,15 @@ router.get('/user/:userId/for', (req: express.Request, res: express.Response) =>
 });
 
 /**
- * GET /user/:userId/with
+ * GET /user/me/with
  *
  * Returns an array of Appointment.Full objects as json if the request was correct.
  * Returns a 400 BAD REQUEST along with a json object describing
  * the error if there was an error.
  */
-router.get('/user/:userId/with', (req: express.Request, res: express.Response) => {
+router.get('/user/me/with', (req: express.Request, res: express.Response) => {
   return OMApps
-    .getAppointmentsWithUser(req.params['userId'])
+    .getAppointmentsWithUser(req.session.passport.user.username)
     .then((appointments: Appointment.Full[]) => {
       return res
         .status(200)
