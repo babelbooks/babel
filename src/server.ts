@@ -11,6 +11,7 @@ import { skipFor }              from './auth/auth.middlewares';
 import * as user  from './user/user.router';
 import * as book  from './book/book.router';
 import * as auth  from './auth/auth.router';
+import * as meet  from './appointement/appointment.router';
 import * as debug from './debug.docker';
 
 import 'colors';
@@ -67,6 +68,7 @@ app.get('/test', (req: any, res: any) => res.status(200).json({
 app.use('/auth', auth.router);
 app.use('/user', skipFor(ensureAuthenticated, user.noNeedToCheck), user.router);
 app.use('/book', skipFor(ensureAuthenticated, book.noNeedToCheck), book.router);
+app.use('/appointment', skipFor(ensureAuthenticated, meet.noNeedToCheck), meet.router);
 
 /**
  * Run the server.
