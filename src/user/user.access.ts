@@ -203,3 +203,29 @@ export function borrowBook(userId: ID, bookId: ID): Bluebird<ID> {
       );
     });
 }
+
+/**
+ * Given an isbn, get all the users that currently have
+ * the corresponding book and available.
+ * @param isbn the isbn of the book
+ * @returns an array of username in json
+ */
+export function getCurrentOwners(isbn: string): Bluebird<any[]> {
+  console.log('Sending a sql request');
+  return Bluebird
+    .resolve(database.transaction((t: Transaction) => {
+      return database.query(
+        'SELECT Borrow.userId as username FROM Book, Borrow WHERE Book.isbn = :isbn AND Book.bookId = Borrow.bookId AND Book.available = 1 AND Borrow.dateOfReturn is NULL',
+        {
+          replacements: {
+            isbn: isbn
+          },
+          type: database.QueryTypes.SELECT,
+          transaction: t
+        });
+    }))
+    .then((res: any[]) => {
+      console.log('result of sql request: ' + res);
+      return res;
+    });
+}

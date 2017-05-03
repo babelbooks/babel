@@ -156,3 +156,14 @@ export function borrowBook(userId: ID, bookId: ID): Bluebird<ID> {
 //   return services.updatePassword(pass);
 // }
 
+/**
+ * Borrows the book for the given user.
+ * Upon success, returns the ID of the created Borrow object.
+ * @param isbn the isbn of the book
+ * @returns {Bluebird<any[]>}
+ */
+export function getCurrentOwners(isbn: string): Bluebird<any[]> {
+  return services
+    .getCurrentOwners(isbn);
+}
+
