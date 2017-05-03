@@ -166,6 +166,18 @@ export function addScore(userId: ID, n: number): Bluebird<User.Info> {
   return services.addScore(userId, n);
 }
 
+/**
+ * Borrows the book for the given user.
+ * Upon success, returns the ID of the created Borrow object.
+ * @param userId The user to which add points.
+ * @param bookId The number of points to add.
+ * @returns {Bluebird<ID>}
+ */
+export function borrowBook(userId: ID, bookId: ID): Bluebird<ID> {
+  return services
+    .borrowBook(userId, bookId);
+}
+
 // export function updatePassword(userId: ID, oldPass: string, pass: string): Bluebird<any> {
 //   return services.updatePassword(pass);
 // }

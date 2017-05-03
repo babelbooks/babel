@@ -190,7 +190,7 @@ DELIMITER $$
 CREATE FUNCTION newBorrowing
 (myBookId bigint,
  myUserId varchar(255)
-) RETURNS BOOLEAN
+) RETURNS bigint(20)
 BEGIN
 
     IF( (select available FROM Book WHERE bookId = myBookId)) then 
@@ -202,9 +202,9 @@ BEGIN
 
         INSERT INTO Borrow(borrowId, bookId, userId, beginDate, dateOfReturn) VALUES (NULL, myBookId, myUserId, Now(), NULL);
 
-        RETURN TRUE;
+        RETURN LAST_INSERT_ID();
     ELSE
-        RETURN FALSE;
+        RETURN -1;
     END IF;
 
 END $$

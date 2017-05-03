@@ -26,6 +26,24 @@ export function getBookById(bookId: ID): Bluebird<Book.Raw> {
 }
 
 /**
+ * Returns the raw borrowing identified by the given ID.
+ * If no Borrow exists with such an ID,
+ * returns a promise rejection.
+ * @param borrowId The book's ID.
+ * @returns {Bluebird<Book.Borrowing>}
+ */
+export function getBorrowById(borrowId: ID): Bluebird<Book.Borrowing> {
+  return Bluebird.resolve(Model.Borrow
+    .findById(borrowId))
+    .then((borrow: Instance<any>) => {
+      if(!borrow) {
+        return Bluebird.reject(new Error('No Borrow found with the ID: ' + borrowId));
+      }
+      return borrow.get({plain: true});
+    });
+}
+
+/**
  * Returns the list of all available books
  * in the database. The default limit is 10 and
  * the default offset is 0.

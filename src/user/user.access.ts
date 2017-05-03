@@ -200,11 +200,12 @@ export function getUserReadBooks(userId: ID): Bluebird<Book.Raw[]> {
  * (by calling an internal procedure).
  * If there was an error (book unavailable or bad ID provided),
  * returns a promise rejection.
+ * Otherwise, returns the created Borrow's ID.
  * @param userId The user's ID.
  * @param bookId The ID of the book to borrow.
- * @returns {Bluebird<boolean>}
+ * @returns {Bluebird<ID>}
  */
-export function borrowBook(userId: ID, bookId: ID): Bluebird<void> {
+export function borrowBook(userId: ID, bookId: ID): Bluebird<ID> {
   return Bluebird
     .resolve(database.transaction((t: Transaction) => {
       return database.query(
@@ -219,9 +220,9 @@ export function borrowBook(userId: ID, bookId: ID): Bluebird<void> {
         });
     }))
     .then((res: any[]) => {
-      if(res && res[0] && res[0].res == 1) {
+      if(res && res[0] && res[0].res !== undefined) {
         // That's a success
-        return;
+        return res[0].res;
       }
       // There was a problem
       return Bluebird.reject(
