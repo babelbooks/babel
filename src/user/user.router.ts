@@ -142,6 +142,29 @@ router.get('/:userId/books/reading', (req: express.Request, res: express.Respons
 });
 
 /**
+ * GET /:userId/books/read
+ *
+ * Returns an User.Books object as json if the request was correct.
+ * Note that this includes an user not possessing any read book for now.
+ * Returns a 400 BAD REQUEST along with a json object describing
+ * the error if there was an error.
+ */
+router.get('/:userId/books/read', (req: express.Request, res: express.Response) => {
+  return OMUser
+    .getUserReadBooks(req.params['userId'])
+    .then((books: User.Books) => {
+      return res
+        .status(200)
+        .json(books);
+    })
+    .catch((err: Error) => {
+      return res
+        .status(400)
+        .json(err);
+    });
+});
+
+/**
  * POST /me/score
  * n: number
  *

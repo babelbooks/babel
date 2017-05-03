@@ -83,6 +83,32 @@ export function getUserReadingBooks(userId: ID): Bluebird<User.Books> {
 }
 
 /**
+ * Gather the list of all books already read by the given user
+ * (identified by the given ID).
+ * If the user hasn't read any books which are still borrowed, returns an object
+ * with an empty array.
+ * @param userId The user's ID.
+ * @returns {Bluebird<User.Books>}
+ */
+export function getUserReadBooks(userId: ID): Bluebird<User.Books> {
+  return services
+    .getUserReadBooks(userId)
+    .then((books: Book.Raw[]) => {
+      let lib: User.Books = {
+        username: userId,
+        books: []
+      };
+      for(let b of books) {
+        lib.books.push({
+          bookId: b.bookId,
+          isbn: b.isbn ? b.isbn : +b.bookId + Book.META_ISBN
+        });
+      }
+      return lib;
+    });
+}
+
+/**
  * Returns all user's information that can be safely
  * broadcast. I.e. some data such has the hashed password
  * won't be sent here.
