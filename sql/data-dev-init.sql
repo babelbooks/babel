@@ -183,10 +183,7 @@ ALTER TABLE `depositLocation`
 ALTER TABLE `Appointment`
   ADD CONSTRAINT `appointment_ibfk_1` FOREIGN KEY (`currentOwnerId`) REFERENCES `User` (`username`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `appointment_ibfk_2` FOREIGN KEY (`borrowId`) REFERENCES `Borrow` (`borrowId`) ON DELETE CASCADE ON UPDATE CASCADE,
-<<<<<<< HEAD
   ADD CONSTRAINT `appointment_ibfk_3` FOREIGN KEY (`depositLocationId`) REFERENCES `depositLocation` (`depositLocationId`) ON DELETE CASCADE ON UPDATE CASCADE;
-=======
-  ADD CONSTRAINT `appointment_ibfk_3` FOREIGN KEY (`depositLocationId`) REFERENCES `depositlocation` (`depositLocationId`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 DELIMITER $$
 
@@ -197,7 +194,6 @@ BEGIN
 END $$
 
 DELIMITER ;
->>>>>>> 8fb053e556fe4e9b595be0a56c6d9a11371e6d4e
 
 DELIMITER $$
 
