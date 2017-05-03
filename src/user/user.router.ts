@@ -142,6 +142,36 @@ router.get('/:userId/books/reading', (req: express.Request, res: express.Respons
 });
 
 /**
+ * GET /:isbn
+ * Response Ex
+ * [
+ *    {username: Ceyb},
+ *    {username: tabernac}
+ * ]
+ * 
+ * Given an isbn, get all the users that currently have
+ * the corresponding book and available.
+ * @param isbn the isbn of the book
+ * @returns an array of username in json
+ */
+router.get('/:isbn', (req: express.Request, res: express.Response) => {
+  return OMUser
+    .getCurrentOwners(req.params['isbn'])
+    .then((users: any[]) => {
+      return res
+        .status(200)
+        .json(users);
+    })
+    .catch((err: Error) => {
+      console.log('babel: Error in route user/' + req.params['isbn']);
+      return res
+      .status(400)
+      .json(err);
+    });
+});
+
+
+/*
  * GET /:userId/books/read
  *
  * Returns an User.Books object as json if the request was correct.
@@ -159,8 +189,8 @@ router.get('/:userId/books/read', (req: express.Request, res: express.Response) 
     })
     .catch((err: Error) => {
       return res
-        .status(400)
-        .json(err);
+      .status(400)
+      .json(err);
     });
 });
 
@@ -262,6 +292,8 @@ router.put('/add', (req: express.Request, res: express.Response) => {
       return res.status(400).json(err);
     });
 });
+
+
 
 /**
  * The paths this router consider as free to query

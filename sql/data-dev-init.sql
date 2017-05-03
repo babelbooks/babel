@@ -183,7 +183,21 @@ ALTER TABLE `depositLocation`
 ALTER TABLE `Appointment`
   ADD CONSTRAINT `appointment_ibfk_1` FOREIGN KEY (`currentOwnerId`) REFERENCES `User` (`username`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `appointment_ibfk_2` FOREIGN KEY (`borrowId`) REFERENCES `Borrow` (`borrowId`) ON DELETE CASCADE ON UPDATE CASCADE,
+<<<<<<< HEAD
   ADD CONSTRAINT `appointment_ibfk_3` FOREIGN KEY (`depositLocationId`) REFERENCES `depositLocation` (`depositLocationId`) ON DELETE CASCADE ON UPDATE CASCADE;
+=======
+  ADD CONSTRAINT `appointment_ibfk_3` FOREIGN KEY (`depositLocationId`) REFERENCES `depositlocation` (`depositLocationId`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+DELIMITER $$
+
+CREATE TRIGGER after_insert_book AFTER INSERT
+ON Book FOR EACH ROW
+BEGIN
+    INSERT INTO Borrow(borrowId, bookId, userId, beginDate, dateOfReturn)  VALUES (NULL, NEW.bookId, NEW.origin ,Now(), NULL);
+END $$
+
+DELIMITER ;
+>>>>>>> 8fb053e556fe4e9b595be0a56c6d9a11371e6d4e
 
 DELIMITER $$
 
@@ -252,10 +266,10 @@ INSERT INTO `Book` (`bookId`, `isbn`, `origin`, `available`) VALUES
 --
 
 INSERT INTO `Borrow` (`borrowId`, `bookId`, `userId`, `beginDate`, `dateOfReturn`) VALUES
-(1, 2, 'Le Poney', '2017-04-02 10:40:16', '2017-04-04 08:40:12'),
-(2, 4, 'Ceyb', '2017-04-10 17:34:23', NULL),
-(3, 6, 'Ceyb', '2017-04-06 07:40:52', NULL),
-(4, 7, 'Ceyb', '2017-04-12 18:34:23', NULL);
+(NULL, 2, 'Le Poney', '2017-04-02 10:40:16', '2017-04-04 08:40:12'),
+(NULL, 4, 'Ceyb', '2017-04-10 17:34:23', NULL),
+(NULL, 6, 'Ceyb', '2017-04-06 07:40:52', NULL),
+(NULL, 7, 'Ceyb', '2017-04-12 18:34:23', NULL);
 
 --
 -- Dumping data for table depositLocation
