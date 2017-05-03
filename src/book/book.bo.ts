@@ -53,3 +53,16 @@ export function setBookRead(bookId: ID): Bluebird<any> {
 export function getBorrowing(borrowId: ID): Bluebird<Book.Borrowing> {
   return services.getBorrowById(borrowId);
 }
+
+/**
+ * Returns a borrow corresponding to the current possession of the given book
+ * by the given user.
+ * If the user or the book doesn't exist, or if the user doesn't possess the given book,
+ * returns a promise rejection.
+ * @param userId The user's ID.
+ * @param bookId The book's ID.
+ * @returns {Bluebird<Book.Borrowing>}
+ */
+export function isBorrowed(userId: ID, bookId: ID): Bluebird<Book.Borrowing> {
+  return services.isBorrowedByUser(userId,bookId);
+}

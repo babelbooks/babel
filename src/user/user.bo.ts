@@ -181,4 +181,3 @@ export function borrowBook(userId: ID, bookId: ID): Bluebird<ID> {
 // export function updatePassword(userId: ID, oldPass: string, pass: string): Bluebird<any> {
 //   return services.updatePassword(pass);
 // }
-
