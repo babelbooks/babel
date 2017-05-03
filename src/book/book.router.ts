@@ -139,3 +139,21 @@ export const noNeedToCheck: Authorized[] = [
   {
     path: '/test'
   }];
+
+
+  /**
+ * GET /isborrowed/:userId/:bookId
+ *
+ * Returns an Book.Borrowing object as json if the request was correct.
+ * Returns a 400 BAD REQUEST along with a json object describing
+ * the error if there was an error.
+ */
+router.get('/isborrowed/:userId/:bookId', (req: express.Request, res: express.Response) => {
+  return OMBook
+    .isBorrowed(req.params['userId'], req.params['bookId'])
+    .then((borrow: Book.Borrowing) => {
+      return res
+        .status(200)
+        .json(borrow);
+    });
+});

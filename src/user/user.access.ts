@@ -167,6 +167,33 @@ export function getUserReadingBooks(userId: ID): Bluebird<Book.Raw[]> {
 }
 
 /**
+ * Returns the list of all books that the given user
+ * has read but which are still in its possession.
+ * If the given user doesn't exists or is not currently possessing
+ * any read book, returns an empty array in booksID.
+ * @param userId The user's ID.
+ * @returns {Bluebird<User.Books>}
+ */
+export function getUserReadBooks(userId: ID): Bluebird<Book.Raw[]> {
+  return Bluebird.resolve(Model.Borrow
+    .findAll({
+      where: {
+        userId: userId,
+        dateOfReturn: null
+      },
+      include: [{
+        model: Model.Book,
+        where: {
+          available: true
+        }
+      }]
+    }))
+    .map((res: any) => {
+      return res.get({plain: true}).book;
+    });
+}
+
+/**
  * Marks the given book a borrowed by the given user.
  * It also adds a transaction in the Borrow table,
  * and ensures that the table is still consistent
