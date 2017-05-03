@@ -4,8 +4,8 @@ import 'colors';
 let co = mysql.createConnection({
   host     : process.env.BB_DB_HOST || 'localhost',
   port     : process.env.BB_DB_PORT || 3306,
-  user     : process.env.BB_DB_USER || 'borges',
-  password : process.env.BB_DB_PASS || 'devonly',
+  user     : process.env.BB_DB_USER || 'root',
+  password : process.env.BB_DB_PASS || 'admin',
   database : process.env.BB_DB_NAME || 'babeldb',
 });
 

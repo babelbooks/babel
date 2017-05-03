@@ -209,7 +209,7 @@ export function borrowBook(userId: ID, bookId: ID): Bluebird<ID> {
   return Bluebird
     .resolve(database.transaction((t: Transaction) => {
       return database.query(
-        'select newBorrowing(:userId, :bookId) as res',
+        'select newBorrowing(:bookId, :userId) as res',
         {
           replacements: {
             userId: userId,

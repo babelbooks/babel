@@ -45,8 +45,8 @@ options.define = {
  */
 export let database = new Sequelize(
   process.env.BB_DB_NAME || 'BabelDB',
-  process.env.BB_DB_USER || 'borges',
-  process.env.BB_DB_PASSWORD || 'devonly',
+  process.env.BB_DB_USER || 'root',
+  process.env.BB_DB_PASSWORD || 'admin',
   options
 );
 
