@@ -121,8 +121,8 @@ ALTER TABLE `Borrow`
 -- --------------------------------------------------------
 
 -- Create apppoiment & depositLocations
-DROP TABLE IF EXISTS `appointment`;
-CREATE TABLE `appointment` (
+DROP TABLE IF EXISTS `Appointment`;
+CREATE TABLE `Appointment` (
   `appointmentId` bigint(20) NOT NULL,
   `currentOwnerId` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `borrowId` bigint(20) NOT NULL,
@@ -132,7 +132,7 @@ CREATE TABLE `appointment` (
 --
 -- Indexes for table `appointment`
 --
-ALTER TABLE `appointment`
+ALTER TABLE `Appointment`
   ADD PRIMARY KEY (`appointmentId`),
   ADD KEY `currentOwnerId` (`currentOwnerId`),
   ADD KEY `borrowId` (`borrowId`),
@@ -141,17 +141,17 @@ ALTER TABLE `appointment`
 --
 -- AUTO_INCREMENT for table `appointment`
 --
-ALTER TABLE `appointment`
+ALTER TABLE `Appointment`
   MODIFY `appointmentId` bigint(20) NOT NULL AUTO_INCREMENT;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `depositlocation`
+-- Table structure for table `depositLocation`
 --
 
-DROP TABLE IF EXISTS `depositlocation`;
-CREATE TABLE `depositlocation` (
+DROP TABLE IF EXISTS `depositLocation`;
+CREATE TABLE `depositLocation` (
   `depositLocationId` bigint(20) NOT NULL,
   `depositLocationType` varchar(20) NOT NULL,
   `depositLocationAddress` text NOT NULL
@@ -162,9 +162,9 @@ CREATE TABLE `depositlocation` (
 --
 
 --
--- Indexes for table `depositlocation`
+-- Indexes for table `depositLocation`
 --
-ALTER TABLE `depositlocation`
+ALTER TABLE `depositLocation`
   ADD PRIMARY KEY (`depositLocationId`);
 
 --
@@ -172,19 +172,19 @@ ALTER TABLE `depositlocation`
 --
 
 --
--- AUTO_INCREMENT for table `depositlocation`
+-- AUTO_INCREMENT for table `depositLocation`
 --
-ALTER TABLE `depositlocation`
+ALTER TABLE `depositLocation`
   MODIFY `depositLocationId` bigint(20) NOT NULL AUTO_INCREMENT;
 
   --
 -- Constraints for table `appointment`
 --
-ALTER TABLE `appointment`
+ALTER TABLE `Appointment`
   ADD CONSTRAINT `appointment_ibfk_1` FOREIGN KEY (`currentOwnerId`) REFERENCES `User` (`username`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `appointment_ibfk_2` FOREIGN KEY (`borrowId`) REFERENCES `Borrow` (`borrowId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `appointment_ibfk_3` FOREIGN KEY (`depositLocationId`) REFERENCES `depositlocation` (`depositLocationId`) ON DELETE CASCADE ON UPDATE CASCADE;
-  
+  ADD CONSTRAINT `appointment_ibfk_3` FOREIGN KEY (`depositLocationId`) REFERENCES `depositLocation` (`depositLocationId`) ON DELETE CASCADE ON UPDATE CASCADE;
+
 DELIMITER $$
 
 CREATE FUNCTION newBorrowing
@@ -193,10 +193,10 @@ CREATE FUNCTION newBorrowing
 ) RETURNS bigint(20)
 BEGIN
 
-    IF( (select available FROM Book WHERE bookId = myBookId)) then 
+    IF( (select available FROM Book WHERE bookId = myBookId)) then
         UPDATE Book SET Book.available = FALSE
         WHERE Book.bookId = myBookId;
-        
+
         UPDATE Borrow SET Borrow.dateOfReturn = Now()
         WHERE Borrow.bookId = myBookId && Borrow.dateOfReturn IS NULL;
 
@@ -258,10 +258,10 @@ INSERT INTO `Borrow` (`borrowId`, `bookId`, `userId`, `beginDate`, `dateOfReturn
 (4, 7, 'Ceyb', '2017-04-12 18:34:23', NULL);
 
 --
--- Dumping data for table depositlocation
+-- Dumping data for table depositLocation
 --
 
-INSERT INTO depositlocation (depositLocationId, depositLocationType, depositLocationAddress) VALUES
+INSERT INTO depositLocation (depositLocationId, depositLocationType, depositLocationAddress) VALUES
 (1, 'DOMICILE', '12, avenue jean jaurès\r\n69100 Villeurbanne'),
 (2, 'CAFE', '30 bourg Confluence,\r\n69004 Lyon'),
 (3, 'PARC', 'Arbre au nord de la rivière,\r\nFeysine');
@@ -270,7 +270,7 @@ INSERT INTO depositlocation (depositLocationId, depositLocationType, depositLoca
 -- Dumping data for table appointment
 --
 
-INSERT INTO appointment (appointmentId, currentOwnerId, borrowId, depositLocationId) VALUES
+INSERT INTO Appointment (appointmentId, currentOwnerId, borrowId, depositLocationId) VALUES
 (1, 'Le Poney', 2, 1),
 (2, 'tabernac', 3, 2),
 (3, 'Le Poney', 4, 3);
