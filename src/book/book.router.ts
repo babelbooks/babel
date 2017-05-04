@@ -119,9 +119,9 @@ router.put('/add', (req: express.Request, res: express.Response) => {
  * describing the error.
  * TODO: check return type
  */
-router.post('/read', (req: express.Request, res: express.Response) => {
+router.post('/read/:bookId', (req: express.Request, res: express.Response) => {
   return OMBook
-    .setBookRead(req.body.bookId)
+    .setBookRead(req.params['bookId'])
     .then((book: any) => {
       return res.status(200).json(book);
     })
