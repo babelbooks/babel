@@ -23,6 +23,7 @@ export function getBookById(bookId: ID): Bluebird<Book.Raw> {
       }
       return book.get({plain: true});
     });
+    // Test
 }
 
 /**
@@ -123,31 +124,4 @@ export function setBookRead(bookId: ID): Bluebird<Book.Raw> {
     .then((book: Instance<any>) => {
       return book.get({plain: true});
     });
-}
-
-
-/**
- * Returns a borrow corresponding to the current possession of the given book
- * by the given user.
- * If the user or the book doesn't exist, or if the user doesn't possess the given book,
- * returns a promise rejection.
- * @param userId The user's ID.
- * @param bookId The book's ID.
- * @returns {Bluebird<Book.Borrowing>}
- */
-export function isBorrowedByUser(userId: ID, bookId: ID): Bluebird<Book.Borrowing> {
-  return Bluebird.resolve(Model.Borrow
-    .find({
-      where: {
-        userId: userId,
-        bookId: bookId,
-        dateOfReturn: null
-      }
-    })
-    .then((borrow: Instance<any>) => {
-      if(!borrow) {
-        return Bluebird.reject(new Error('No Borrow found with the userId: ' + userId + ' and the bookId: ' + bookId));
-      }
-      return borrow.get({plain: true});
-    }));
 }
